@@ -1,0 +1,28 @@
+{
+  "type": "module",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express4": "^0.0.1",
+    "formidable": "^3.5.4",
+    "https": "^1.0.0",
+    "mongoose": "^9.2.3",
+    "nodemon": "^3.1.14",
+    "paytmchecksum": "^1.5.1",
+    "react-multi-carousel": "^2.8.6",
+    "uuid": "^13.0.0"
+  },
+  "name": "flipcart",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "cd client npm start && cd server node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

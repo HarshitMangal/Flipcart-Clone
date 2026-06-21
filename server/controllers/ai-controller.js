@@ -37,9 +37,9 @@ Guidelines:
 
         try {
             const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-            // Use gemini-1.5-flash as it is widely available and fast
+            // Use gemini-2.5-flash as it is widely available and fast
             const model = genAI.getGenerativeModel({ 
-                model: "gemini-1.5-flash",
+                model: "gemini-2.5-flash",
                 systemInstruction: systemInstruction
             });
 
@@ -183,7 +183,7 @@ export const translateReview = async (req, res) => {
         try {
             const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
             const model = genAI.getGenerativeModel({ 
-                model: "gemini-1.5-flash",
+                model: "gemini-2.5-flash",
                 systemInstruction: `You are an expert translator. Translate the following user shopping review into ${targetLang}. Return ONLY the translated text. Do not add any extra explanations, greetings or conversational filler text.`
             });
 

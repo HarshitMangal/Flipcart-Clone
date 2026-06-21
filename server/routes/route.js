@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { userSignup, userLogin, sendOtp, verifyOtp, googleLogin } from '../controllers/user-controller.js';
+import { userSignup, userLogin, sendOtp, verifyOtp, googleLogin, getUserProfile, updateUserProfile } from '../controllers/user-controller.js';
 import { getProducts, getProductById, importProducts, getSimilarProducts } from '../controllers/product-controllers.js';
 import { createRazorpayOrder, verifyPayment } from '../controllers/payment-controller.js';
 import { createOrder, getOrders } from '../controllers/order-controller.js';
@@ -19,6 +19,8 @@ router.post('/login', userLogin);
 router.post('/send-otp', sendOtp);
 router.post('/verify-otp', verifyOtp);
 router.post('/google-login', googleLogin);
+router.get('/profile/:username', getUserProfile);
+router.put('/profile/update', updateUserProfile);
 
 // Product routes
 router.get('/products', getProducts);

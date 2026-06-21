@@ -180,3 +180,52 @@ export const userLogin = async (req, res) => {
     }
 };  
 
+export const getUserProfile = async (req, res) => {
+    try {
+        const { username } = req.params;
+        const user = await User.findOne({ username: username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json({
+            success: true,
+            data: {
+                username: user.username,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                email: user.email
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const updateUserProfile = async (req, res) => {
+    try {
+        const { username, firstname, lastname, email } = req.body;
+        const updatedUser = await User.findOneAndUpdate(
+            { username: username },
+            { $set: { firstname, lastname, email } },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Profile updated successfully",
+            data: {
+                username: updatedUser.username,
+                firstname: updatedUser.firstname,
+                lastname: updatedUser.lastname,
+                email: updatedUser.email
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+

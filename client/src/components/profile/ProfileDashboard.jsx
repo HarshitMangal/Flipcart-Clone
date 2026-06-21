@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Box, Typography, Button, TextField, Grid, styled, Card, CardContent, IconButton, FormControlLabel, Radio, RadioGroup, Checkbox } from '@mui/material';
 import { DataContext } from '../../context/dataprovider';
-import { getAddressesAPI, addAddressAPI, updateAddressAPI, deleteAddressAPI } from '../../service/api';
+import { getAddressesAPI, addAddressAPI, updateAddressAPI, deleteAddressAPI, getUserProfileAPI, updateUserProfileAPI } from '../../service/api';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
@@ -105,6 +105,13 @@ const ProfileDashboard = () => {
     const [showForm, setShowForm] = useState(false);
     const [formData, setFormData] = useState(initialAddressValues);
     const [editId, setEditId] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [profileData, setProfileData] = useState({
+        firstname: '',
+        lastname: '',
+        email: '',
+        username: account || ''
+    });
 
     const fetchAddresses = async () => {
         if (!account) return;
@@ -114,9 +121,34 @@ const ProfileDashboard = () => {
         }
     };
 
+    const loadProfile = async () => {
+        if (!account) return;
+        const res = await getUserProfileAPI(account);
+        if (res && res.success && res.data) {
+            setProfileData({
+                firstname: res.data.firstname || '',
+                lastname: res.data.lastname || '',
+                email: res.data.email || '',
+                username: res.data.username || account
+            });
+        }
+    };
+
     useEffect(() => {
+        loadProfile();
         fetchAddresses();
     }, [account]);
+
+    const handleProfileSave = async () => {
+        const res = await updateUserProfileAPI(profileData);
+        if (res && res.status === 200) {
+            alert('Profile updated successfully!');
+            setIsEditing(false);
+            loadProfile();
+        } else {
+            alert('Failed to update profile');
+        }
+    };
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -194,13 +226,75 @@ const ProfileDashboard = () => {
             </Sidebar>
 
             <ContentArea>
-                <Typography variant="h6" style={{ fontWeight: 600, marginBottom: 20 }}>Personal Information</Typography>
+                <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                    <Typography variant="h6" style={{ fontWeight: 600 }}>Personal Information</Typography>
+                    {!isEditing ? (
+                        <Button 
+                            variant="outlined" 
+                            startIcon={<EditIcon />} 
+                            onClick={() => setIsEditing(true)}
+                            style={{ textTransform: 'none', borderColor: '#e0e0e0', color: '#2874f0' }}
+                        >
+                            EDIT
+                        </Button>
+                    ) : (
+                        <Box style={{ display: 'flex', gap: '15px' }}>
+                            <Button 
+                                variant="contained" 
+                                style={{ background: '#fb641b', color: '#fff', textTransform: 'none' }}
+                                onClick={handleProfileSave}
+                            >
+                                SAVE
+                            </Button>
+                            <Button 
+                                variant="text" 
+                                style={{ color: '#2874f0', textTransform: 'none' }}
+                                onClick={() => { setIsEditing(false); loadProfile(); }}
+                            >
+                                CANCEL
+                            </Button>
+                        </Box>
+                    )}
+                </Box>
                 <Grid container spacing={3} style={{ marginBottom: 40 }}>
                     <Grid item xs={12} sm={6}>
-                        <TextField label="Username/Account" value={account} fullWidth disabled variant="outlined" />
+                        <TextField 
+                            label="First Name" 
+                            value={profileData.firstname} 
+                            onChange={(e) => setProfileData({ ...profileData, firstname: e.target.value })} 
+                            fullWidth 
+                            disabled={!isEditing} 
+                            variant="outlined" 
+                        />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField label="Country" value="India" fullWidth disabled variant="outlined" />
+                        <TextField 
+                            label="Last Name" 
+                            value={profileData.lastname} 
+                            onChange={(e) => setProfileData({ ...profileData, lastname: e.target.value })} 
+                            fullWidth 
+                            disabled={!isEditing} 
+                            variant="outlined" 
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField 
+                            label="Email Address" 
+                            value={profileData.email} 
+                            onChange={(e) => setProfileData({ ...profileData, email: e.target.value })} 
+                            fullWidth 
+                            disabled={!isEditing} 
+                            variant="outlined" 
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField 
+                            label="Username" 
+                            value={profileData.username} 
+                            fullWidth 
+                            disabled 
+                            variant="outlined" 
+                        />
                     </Grid>
                 </Grid>
 

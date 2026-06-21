@@ -150,3 +150,20 @@ export const getGroupBuyAPI = async (id) => {
         console.log('Error while calling get group buy API', error);
     }
 };
+
+export const getUserProfileAPI = async (username) => {
+    try {
+        const response = await axios.get(`http://localhost:8000/api/profile/${username}`);
+        return response.data;
+    } catch (error) {
+        console.log('Error while calling get user profile API', error);
+    }
+};
+
+export const updateUserProfileAPI = async (data) => {
+    try {
+        return await axios.put('http://localhost:8000/api/profile/update', data);
+    } catch (error) {
+        console.log('Error while calling update user profile API', error);
+    }
+};

@@ -26,6 +26,17 @@ router.get('/products/import', importProducts);
 router.get('/products/:id', getProductById);
 router.get('/products/:id/similar', getSimilarProducts);
 
+import defaultData from '../default.js';
+router.get('/products/reset', async (req, res) => {
+    try {
+        await defaultData();
+        res.status(200).json({ success: true, message: "Default Flipkart products restored successfully!" });
+    } catch (error) {
+        console.error("Error resetting products:", error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // Razorpay Payment routes
 router.post('/payment/create', createRazorpayOrder);
 router.post('/payment/verify', verifyPayment);

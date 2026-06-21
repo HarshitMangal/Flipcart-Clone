@@ -138,6 +138,7 @@ Open `http://localhost:3000` to view the clone.
 ### 📦 Catalog & Reviews
 * `GET /api/products` - Retrieve all products with optional filters.
 * `GET /api/products/import` - Seed 30 DummyJSON products to database.
+* `GET /api/products/reset` - Restore all default Flipkart seed products to database.
 * `GET /api/products/:id` - Fetch details for a specific product.
 * `GET /api/products/:id/similar` - Get 5 similar products from the same category.
 * `POST /api/products/:id/review` - Add a customer review & rating.

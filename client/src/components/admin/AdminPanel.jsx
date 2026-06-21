@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { 
     Box, Typography, Tab, Tabs, Table, TableBody, TableCell, TableContainer, 
     TableHead, TableRow, Paper, Button, TextField, Dialog, DialogTitle, 
@@ -7,6 +7,8 @@ import {
 } from '@mui/material';
 import { Delete, Edit, Add, Refresh, ShoppingBag, LocalShipping } from '@mui/icons-material';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { DataContext } from '../../context/dataprovider';
 
 // Styled Components for Flipkart Look
 const Container = styled(Box)`
@@ -37,6 +39,7 @@ const ImageThumbnail = styled('img')({
 });
 
 const AdminPanel = () => {
+    const { account } = useContext(DataContext);
     const [tabIndex, setTabIndex] = useState(0);
     const [products, setProducts] = useState([]);
     const [orders, setOrders] = useState([]);
@@ -115,6 +118,20 @@ const AdminPanel = () => {
         } catch (error) {
             console.error("Error importing products", error);
             showNotification("Failed to import products", "error");
+        }
+    };
+
+    // 3b. Default Flipkart products restore/reset karna
+    const handleResetProducts = async () => {
+        if (!window.confirm("Are you sure you want to delete current products and restore all default Flipkart products?")) return;
+        try {
+            showNotification("Restoring default products... please wait", "info");
+            const response = await axios.get('http://localhost:8000/api/products/reset');
+            showNotification(response.data.message || "Default products restored successfully!");
+            fetchProducts();
+        } catch (error) {
+            console.error("Error resetting products", error);
+            showNotification("Failed to restore products", "error");
         }
     };
 
@@ -206,6 +223,24 @@ const AdminPanel = () => {
         }
     };
 
+    if (account !== 'admin') {
+        return (
+            <Container>
+                <Paper style={{ padding: '50px', textAlign: 'center', margin: '80px auto', maxWidth: '600px', borderRadius: '8px' }}>
+                    <Typography variant="h5" color="error" gutterBottom style={{ fontWeight: 600 }}>
+                        Access Denied 🔒
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary" paragraph>
+                        You do not have administrative privileges to access this panel. Please login as 'admin'.
+                    </Typography>
+                    <Button variant="contained" style={{ backgroundColor: '#2874f0', color: '#fff', textTransform: 'none' }} component={Link} to="/">
+                        Go to Home
+                    </Button>
+                </Paper>
+            </Container>
+        );
+    }
+
     return (
         <Container>
             {/* Top Header Card */}
@@ -259,6 +294,15 @@ const AdminPanel = () => {
                                 onClick={handleImportProducts}
                             >
                                 Import Sample Products
+                            </Button>
+                            
+                            <Button 
+                                variant="outlined" 
+                                color="error" 
+                                style={{ textTransform: 'none' }}
+                                onClick={handleResetProducts}
+                            >
+                                Restore Default Products
                             </Button>
                         </Box>
                     </Box>

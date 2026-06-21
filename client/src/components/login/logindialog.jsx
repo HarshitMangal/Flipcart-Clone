@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import { Dialog, DialogContent, TextField, Box, Button, Typography, styled } from '@mui/material';
 
-import { authenticateLogin, authenticateSignup } from '../../service/api';
+import { authenticateLogin, authenticateSignup, authenticateGoogleLogin, sendOtpAPI, verifyOtpAPI } from '../../service/api';
+import { GoogleLogin } from '@react-oauth/google';
 
 const Component = styled(DialogContent)`
     height: 70vh;
@@ -105,6 +106,10 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
     const [ signup, setSignup ] = useState(signupInitialValues);
     const [ error, showError] = useState(false);
     const [ account, toggleAccount ] = useState(accountInitialValues.login);
+    
+    // OTP states
+    const [ otpSent, setOtpSent ] = useState(false);
+    const [ otp, setOtp ] = useState('');
 
     useEffect(() => {
         showError(false);
@@ -117,15 +122,53 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
     const onInputChange = (e) => {
         setSignup({ ...signup, [e.target.name]: e.target.value });
     }
+    
+    const handleGoogleSuccess = async (credentialResponse) => {
+        const response = await authenticateGoogleLogin({ token: credentialResponse.credential });
+        if(response.status === 200) {
+            handleClose();
+            setAccount(response.data.data.username);
+        } else {
+            showError(true);
+        }
+    }
+    
+    const requestOtp = async () => {
+        if(!login.username) {
+            alert('Please enter email to receive OTP');
+            return;
+        }
+        const res = await sendOtpAPI({ email: login.username });
+        if(res && res.status === 200) {
+            setOtpSent(true);
+            alert('OTP sent to your email');
+        } else {
+            alert('Error sending OTP');
+        }
+    }
+    
+    const verifyUserOtp = async () => {
+        const res = await verifyOtpAPI({ email: login.username, otp });
+        if(res && res.status === 200) {
+            alert('OTP Verified! You can now login.');
+            setOtpSent(false);
+        } else {
+            alert('Invalid OTP');
+        }
+    }
 
     const loginUser = async() => {
-        let response = await authenticateLogin(login);
-        if(!response) 
+        try {
+            let response = await authenticateLogin(login);
+            if(!response) {
+                showError(true);
+            } else {
+                showError(false);
+                handleClose();
+                setAccount(response.data.data.username);
+            }
+        } catch (err) {
             showError(true);
-        else {
-            showError(false);
-            handleClose();
-            setAccount(login.username);
         }
     }
 
@@ -133,7 +176,7 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
         let response = await authenticateSignup(signup);
         if(!response) return;
         handleClose();
-        setAccount(signup.username);
+        setAccount(response.data.data.username);
     }
     
     const toggleSignup = () => {
@@ -158,11 +201,26 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
                         <Wrapper>
                             <TextField variant="standard" onChange={(e) => onValueChange(e)} name='username' label='Enter Email/Mobile number' />
                             { error && <Error>Please enter valid Email ID/Mobile number</Error> }
-                            <TextField variant="standard" onChange={(e) => onValueChange(e)} name='password' label='Enter Password' />
+                            <TextField variant="standard" onChange={(e) => onValueChange(e)} name='password' label='Enter Password' type="password" />
                             <Text>By continuing, you agree to Flipkart's Terms of Use and Privacy Policy.</Text>
                             <LoginButton onClick={() => loginUser()} >Login</LoginButton>
                             <Text style={{textAlign:'center'}}>OR</Text>
-                            <RequestOTP>Request OTP</RequestOTP>
+                            
+                            {!otpSent ? 
+                                <RequestOTP onClick={() => requestOtp()}>Request OTP on Email</RequestOTP>
+                            : 
+                                <Box style={{display:'flex', flexDirection:'column', gap: '10px'}}>
+                                    <TextField variant="standard" onChange={(e) => setOtp(e.target.value)} label='Enter OTP' />
+                                    <Button variant="contained" style={{background: '#2874f0'}} onClick={() => verifyUserOtp()}>Verify OTP</Button>
+                                </Box>
+                            }
+                            
+                            <Box style={{marginTop: 20, display:'flex', justifyContent:'center'}}>
+                                <GoogleLogin
+                                    onSuccess={handleGoogleSuccess}
+                                    onError={() => { console.log('Login Failed'); showError(true); }}
+                                />
+                            </Box>
                             <CreateAccount onClick={() => toggleSignup()}>New to Flipkart? Create an account</CreateAccount>
                         </Wrapper> : 
                         <Wrapper>

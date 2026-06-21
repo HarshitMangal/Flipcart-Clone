@@ -1,92 +1,70 @@
-import paytmchecksum from '../paytm/PaytmChecksum.js';
-import { paytmMerchantkey } from '../server.js';
-import https from 'https';
-import { v4 as uuid } from 'uuid';
+import Razorpay from 'razorpay';
+import crypto from 'crypto';
 
-export const addPaymentGateway = async (request, response) => {
+// Razorpay instance (initialized lazily)
+let razorpay;
+
+// Step 1 - Create Razorpay Order (called from frontend before opening checkout)
+export const createRazorpayOrder = async (req, res) => {
     try {
-        const paytmParams = {
-            MID: process.env.PAYTM_MID,
-            WEBSITE: process.env.PAYTM_WEBSITE,
-            CHANNEL_ID: process.env.PAYTM_CHANNEL_ID,
-            INDUSTRY_TYPE_ID: process.env.PAYTM_INDUSTRY_TYPE_ID,
-            ORDER_ID: uuid(),
-            CUST_ID: process.env.PAYTM_CUST_ID || 'CUST_001',
-            TXN_AMOUNT: String(request.body.amount || '100'),
-            CALLBACK_URL: 'https://securegw-stage.paytm.in/theia/paytmCallback', // ✅ fix
-            EMAIL: request.body.email || '',
-            MOBILE_NO: '1234567890'
+        if (!razorpay) {
+            razorpay = new Razorpay({
+                key_id: process.env.RAZORPAY_KEY_ID,
+                key_secret: process.env.RAZORPAY_KEY_SECRET
+            });
+        }
+        const { amount } = req.body; // amount in rupees
+
+        const options = {
+            amount: amount * 100,        // Razorpay works in paise (1 rupee = 100 paise)
+            currency: 'INR',
+            receipt: `receipt_${Date.now()}`
         };
 
-        const paytmCheckSum = await paytmchecksum.generateSignature(
-            paytmParams, 
-            paytmMerchantkey
-        );
+        const order = await razorpay.orders.create(options);
 
-        response.json({ ...paytmParams, CHECKSUMHASH: paytmCheckSum });
+        return res.status(200).json({
+            orderId: order.id,
+            amount: order.amount,
+            currency: order.currency,
+            key: process.env.RAZORPAY_KEY_ID   // frontend ko key chahiye checkout ke liye
+        });
 
     } catch (error) {
-        console.log('Payment error:', error);
-        response.status(500).json({ error: 'Payment failed' });
+        console.error('Razorpay order creation failed:', error);
+        return res.status(500).json({ message: 'Payment initiation failed' });
     }
-}
+};
 
-export const paymentResponse = (request, response) => {
-    console.log('Callback body:', request.body);
-    
-    const paytmCheckSum = request.body.CHECKSUMHASH;
+// Step 2 - Verify Payment Signature (after user pays)
+export const verifyPayment = async (req, res) => {
+    try {
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
-    if (!paytmCheckSum) {
-        console.log('CHECKSUMHASH missing');
-        return response.redirect('http://localhost:3000/');
-    }
+        // Signature verify karo - tamper check
+        const body = razorpay_order_id + '|' + razorpay_payment_id;
+        const expectedSignature = crypto
+            .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+            .update(body.toString())
+            .digest('hex');
 
-    delete request.body.CHECKSUMHASH;
-
-    const isVerifySignature = paytmchecksum.verifySignature(
-        request.body, 
-        paytmMerchantkey, 
-        paytmCheckSum
-    );
-    
-    if (isVerifySignature) {
-        let verifyParams = {};
-        verifyParams["MID"] = request.body.MID;
-        verifyParams["ORDERID"] = request.body.ORDERID;
-
-        paytmchecksum.generateSignature(verifyParams, paytmMerchantkey)
-        .then(function(checksum) {
-            verifyParams["CHECKSUMHASH"] = checksum;
-            const post_data = JSON.stringify(verifyParams);
-
-            const options = {
-                hostname: 'securegw-stage.paytm.in',
-                port: 443,
-                path: '/order/status',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Content-Length': post_data.length
-                }
-            };
-
-            let res = "";
-            const post_req = https.request(options, function(post_res) {
-                post_res.on('data', function(chunk) {
-                    res += chunk;
-                });
-                post_res.on('end', function() {
-                    let result = JSON.parse(res);
-                    console.log('Payment Result:', result);
-                    response.redirect('http://localhost:3000/');
-                });
+        if (expectedSignature === razorpay_signature) {
+            // Payment verified ✅
+            return res.status(200).json({
+                success: true,
+                message: 'Payment verified successfully',
+                paymentId: razorpay_payment_id
             });
+        } else {
+            // Signature match nahi - payment tampered ❌
+            return res.status(400).json({
+                success: false,
+                message: 'Payment verification failed - signature mismatch'
+            });
+        }
 
-            post_req.write(post_data);
-            post_req.end();
-        });
-    } else {
-        console.log("Checksum Mismatched");
-        response.redirect('http://localhost:3000/');
+    } catch (error) {
+        console.error('Payment verification error:', error);
+        return res.status(500).json({ message: 'Payment verification error' });
     }
-}
+};

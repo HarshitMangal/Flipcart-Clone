@@ -12,7 +12,7 @@ export const products = [
       cost: 625,
       discount: '47%'
     },
-    quantity: 1,
+    quantity: 8,
     description: 'This electric kettle from Pigeon will soon become a travelers best friend.',
     discount: 'Extra 10% Off', 
     tagline: 'Deal of the day' 
@@ -31,7 +31,7 @@ export const products = [
       cost: 899,
       discount: '40%'
     },
-    quantity: 1,
+    quantity: 2,
     description: 'This non-stick sandwich toaster is easy to use and very handy.',
     discount: 'From 99+5% Off', 
     tagline: 'Prestige, Nova & more' 
@@ -50,7 +50,7 @@ export const products = [
       cost: 166,
       discount: '66%'
     },
-    quantity: 1,
+    quantity: 0,
     description: 'This product can tone muscles, reduce belly fat and improve posture.',
     discount: 'Upto 70% Off', 
     tagline: 'Deal of the Day' 
@@ -69,7 +69,7 @@ export const products = [
       cost: 4049,
       discount: '42%'
     },
-    quantity: 1,
+    quantity: 15,
     description: 'A brilliant smartwatch with a beautiful large display.',
     discount: 'Grab Now', 
     tagline: 'Best Seller' 
@@ -107,7 +107,7 @@ export const products = [
       cost: 1199,
       discount: '46%'
     },
-    quantity: 1,
+    quantity: 5,
     description: 'Compact table fan with powerful airflow.',
     discount: 'Minimum 40% Off', 
     tagline: 'Top Selling' 
@@ -126,7 +126,7 @@ export const products = [
       cost: 1199,
       discount: '59%'
     },
-    quantity: 1,
+    quantity: 12,
     description: 'Bluetooth headset with fast charging technology.',
     discount: 'Minimum 50% Off', 
     tagline: 'Grab Now!' 

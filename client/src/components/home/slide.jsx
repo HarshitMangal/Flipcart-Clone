@@ -1,9 +1,11 @@
+import React, { useState } from 'react';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Countdown from 'react-countdown';
 import { Link } from "react-router-dom";
+import CloseIcon from '@mui/icons-material/Close';
 
-import {Box, Typography,Divider,Button,styled} from '@mui/material';
+import { Box, Typography, Divider, Button, Dialog, DialogTitle, DialogContent, Grid, Card, IconButton, styled } from '@mui/material';
 const Component = styled(Box)`
 margin: 20px 0;
 background: #FFFFFF;
@@ -71,6 +73,7 @@ margin-top: 5px;
 
 
 const Slide = ({ products, title,timer }) => {   
+    const [openCatalog, setOpenCatalog] = useState(false);
     const timerURL = "https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/timer_a73398.svg";
     const renderer = ({ hours, minutes, seconds, completed }) => {
          return <span>{hours}:{minutes}:{seconds} Left</span>;
@@ -90,7 +93,7 @@ const Slide = ({ products, title,timer }) => {
                    
   
 
-             <ViewAllButton variant="contained" color="primary">View All </ViewAllButton>
+             <ViewAllButton variant="contained" color="primary" onClick={() => setOpenCatalog(true)}>View All </ViewAllButton>
         </Deal>
         <Divider />
 
@@ -125,6 +128,64 @@ const Slide = ({ products, title,timer }) => {
                 </Link>
         ))}
     </Carousel>
+
+    {/* View All Dialog Popup Grid */}
+    <Dialog 
+        open={openCatalog} 
+        onClose={() => setOpenCatalog(false)}
+        maxWidth="lg"
+        fullWidth
+    >
+        <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#2874f0', color: '#fff' }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, color: 'white' }}>{title} ({products?.length} Products)</Typography>
+            <IconButton onClick={() => setOpenCatalog(false)} sx={{ color: '#fff' }}>
+                <CloseIcon />
+            </IconButton>
+        </DialogTitle>
+        <DialogContent dividers sx={{ backgroundColor: '#f1f3f6', padding: '20px' }}>
+            <Grid container spacing={3}>
+                {products?.map((product) => (
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+                        <Card 
+                            component={Link} 
+                            to={`/product/${product.id}`} 
+                            onClick={() => setOpenCatalog(false)}
+                            sx={{ 
+                                textDecoration: 'none', 
+                                height: '100%', 
+                                display: 'flex', 
+                                flexDirection: 'column', 
+                                alignItems: 'center', 
+                                padding: '15px', 
+                                textAlign: 'center',
+                                transition: 'transform 0.2s',
+                                '&:hover': {
+                                    transform: 'scale(1.03)',
+                                    boxShadow: '0 4px 20px rgba(0,0,0,0.12)'
+                                }
+                            }}
+                        >
+                            <img 
+                                src={product.url} 
+                                alt={product.title?.shortTitle} 
+                                style={{ width: '120px', height: '120px', objectFit: 'contain', marginBottom: '15px' }} 
+                            />
+                            <Typography sx={{ fontSize: '13px', fontWeight: 600, color: '#212121', height: '40px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                {product.title?.longTitle || product.title?.shortTitle}
+                            </Typography>
+                            <Typography sx={{ color: 'green', fontSize: '12px', fontWeight: 600, mt: 1 }}>
+                                {product.discount}
+                            </Typography>
+                            <Typography sx={{ fontSize: '15px', fontWeight: 600, color: '#212121', mt: 0.5 }}>
+                                ₹{product.price?.cost} <span style={{ textDecoration: 'line-through', color: '#878787', fontSize: '11px', fontWeight: 'normal' }}>₹{product.price?.mrp}</span>
+                            </Typography>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
+        </DialogContent>
+    </Dialog>
+
     </Component>
   )
 };  

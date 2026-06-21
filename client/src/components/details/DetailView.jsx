@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 import { useParams } from "react-router-dom";
 import { getProductDetails } from "../../redux/actions/productAction";
 import { Box, Typography,styled ,Grid} from "@mui/material";
 import ActionItem from "./ActionItem";
 import ProductDetail from './ProductDetail';
+import SimilarProducts from './SimilarProducts';
 
 
 
@@ -43,10 +45,27 @@ const DetailView = () => {
         state => state.getProductDetails
     );
 
+    const [reviews, setReviews] = useState([]);
+
+    const fetchReviews = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8000/api/products/${id}/reviews`);
+            setReviews(response.data);
+        } catch (error) {
+            console.error("Error fetching reviews", error);
+        }
+    };
+
     useEffect(() => {
         if (product && id !== product.id)
             dispatch(getProductDetails(id));
+        
+        fetchReviews();
     }, [dispatch, product, id]);
+
+    const averageRating = reviews.length > 0 
+        ? Number((reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length).toFixed(1)) 
+        : 0;
 
     return (
         <Component>
@@ -59,11 +78,17 @@ const DetailView = () => {
                     </Grid>
 
                     <RightContainer item lg={8} md={8} sm={8} xs={12}>
-                        <ProductDetail product={product} />
+                        <ProductDetail 
+                            product={product} 
+                            reviews={reviews}
+                            averageRating={averageRating}
+                            refetchReviews={fetchReviews}
+                        />
                     </RightContainer>
 
                 </ Container>
             }
+            {product && <SimilarProducts productId={product.id} />}
         </Component>
     )
 }

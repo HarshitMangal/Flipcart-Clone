@@ -5,9 +5,15 @@ import logo from './logo.svg';
 import Header from './components/header/header';
 import Home from './components/home/home';
 import DetailView from './components/details/DetailView';
-
 import Cart from './components/Cart/Cart';
 import DataProvider from './context/dataprovider';
+import OrderHistory from './components/orders/OrderHistory';
+import AIChatbot from './components/ai/AIChatbot';
+import AdminPanel from './components/admin/AdminPanel';
+import Footer from './components/footer/Footer';
+import Wishlist from './components/wishlist/Wishlist';
+import ProfileDashboard from './components/profile/ProfileDashboard';
+import GroupBuyDetail from './components/details/GroupBuyDetail';
 
 import {BrowserRouter,Routes,Route} from 'react-router-dom';
 
@@ -16,16 +22,23 @@ function App() {
   return (
    <DataProvider >
     <BrowserRouter>
-    <Header/>
-    <Box sx={{ marginTop: 6}}>
-      <Routes>
-       <Route path='/' element={<Home/>}/>
-       <Route path='/product/:id' element={ <DetailView/>} />
-         <Route path= '/cart' element={<Cart />} />
-     </Routes>
-    </Box>
+      <Header/>
+      <Box sx={{ marginTop: 6}}>
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/product/:id' element={ <DetailView/>} />
+          <Route path='/cart' element={<Cart />} />
+          <Route path='/orders' element={<OrderHistory />} />
+          <Route path='/admin' element={<AdminPanel />} />
+          <Route path='/wishlist' element={<Wishlist />} />
+          <Route path='/profile' element={<ProfileDashboard />} />
+          <Route path='/group-buy/:id' element={<GroupBuyDetail />} />
+        </Routes>
+      </Box>
+      <Footer />
+      <AIChatbot />
     </BrowserRouter>
-    </DataProvider>
+   </DataProvider>
   );
 }
 

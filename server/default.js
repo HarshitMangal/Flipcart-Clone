@@ -3,12 +3,8 @@ import { products } from "./constants/data.js";
 
 const defaultData = async () => {
   try {
-    // Check if default products already exist
-    const existingCount = await Product.countDocuments({ id: { $in: products.map(p => p.id) } });
-    if (existingCount === products.length) {
-      console.log("Default products already exist, skipping seeding");
-      return;
-    }
+    // Force re-seeding default products to update quantities
+    console.log("Seeding default products...");
 
     // Remove existing default products and re-insert
     await Product.deleteMany({ id: { $in: products.map(p => p.id) } });

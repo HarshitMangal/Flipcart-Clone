@@ -32,7 +32,22 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: function() { return !this.googleId; } // Not required if using Google Login
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    otp: {
+        type: String
+    },
+    otpExpires: {
+        type: Date
+    },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true
     },
     createdAt: {
         type: Date,

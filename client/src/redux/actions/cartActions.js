@@ -25,3 +25,9 @@ export const removeFromCart = (id) => (dispatch) => {
         payload: id
     });
 };
+
+export const resetCart = () => (dispatch) => {
+    dispatch({
+        type: actionTypes.CART_RESET
+    });
+};

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-
+import React from "react";
 import { ButtonGroup, Button, styled } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/actions/cartActions";
 
 const Component = styled(ButtonGroup)`
     margin-top: 30px;
@@ -10,22 +11,25 @@ const StyledButton = styled(Button)`
     border-radius: 50%;
 `;
 
-const GroupedButton = () => {
-    const [ counter, setCounter ] = useState(1);
+const GroupedButton = ({ item }) => {
+    const dispatch = useDispatch();
+    const quantity = item.quantity || 1;
 
     const handleIncrement = () => {
-        setCounter(counter => counter + 1 );
+        dispatch(addToCart(item.id, quantity + 1));
     };
 
     const handleDecrement = () => {
-        setCounter(counter => counter - 1 );
+        if (quantity > 1) {
+            dispatch(addToCart(item.id, quantity - 1));
+        }
     };
 
     return (
         <Component>
-            <StyledButton onClick={() => handleDecrement()} disabled={counter == 0}>-</StyledButton>
-            <Button disabled>{counter}</Button>
-            <StyledButton onClick={() => handleIncrement()}>+</StyledButton>
+            <StyledButton onClick={handleDecrement} disabled={quantity <= 1}>-</StyledButton>
+            <Button disabled>{quantity}</Button>
+            <StyledButton onClick={handleIncrement}>+</StyledButton>
         </Component>
     );
 }

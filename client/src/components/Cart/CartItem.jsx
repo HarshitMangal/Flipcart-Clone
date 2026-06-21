@@ -47,6 +47,11 @@ const Discount = styled(Typography)`
 const Remove = styled(Button)`
     margin-top: 20px;
     font-size: 16px;
+    font-weight: 600;
+    color: #212121;
+    &:hover {
+        color: #2874f0;
+    }
 `;
 
 const CartItem = ({ item, removeItemFromCart }) => {
@@ -56,7 +61,7 @@ const CartItem = ({ item, removeItemFromCart }) => {
         <Component>
             <LeftComponent>
                 <img src={item.url} style={{ height: 110, width: 110 }} />
-                <GroupButton />
+                <GroupButton item={item} />
             </LeftComponent>
             <Box style={{ margin: 20 }}>
                 <Typography>{addEllipsis(item.title.longTitle)}</Typography>
@@ -68,7 +73,7 @@ const CartItem = ({ item, removeItemFromCart }) => {
                     <MRP component="span"><strike>₹{item.price.mrp}</strike></MRP>&nbsp;&nbsp;&nbsp;
                     <Discount component="span">{item.price.discount} off</Discount>
                 </Typography>
-                <Remove onClick={() => removeItemFromCart(item.id)}>Remove</Remove>
+                <Remove onClick={() => removeItemFromCart(item.id)}>REMOVE</Remove>
             </Box>
         </Component>
     )

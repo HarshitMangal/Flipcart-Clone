@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { userSignup, userLogin, sendOtp, verifyOtp, googleLogin, getUserProfile, updateUserProfile } from '../controllers/user-controller.js';
+import { userSignup, userLogin, sendOtp, verifyOtp, googleLogin, getUserProfile, updateUserProfile, becomeSeller } from '../controllers/user-controller.js';
 import { getProducts, getProductById, importProducts, getSimilarProducts } from '../controllers/product-controllers.js';
 import { createRazorpayOrder, verifyPayment } from '../controllers/payment-controller.js';
 import { createOrder, getOrders } from '../controllers/order-controller.js';
@@ -21,6 +21,7 @@ router.post('/verify-otp', verifyOtp);
 router.post('/google-login', googleLogin);
 router.get('/profile/:username', getUserProfile);
 router.put('/profile/update', updateUserProfile);
+router.post('/user/become-seller', becomeSeller);
 router.post('/logout-all', async (req, res) => {
     try {
         const { username } = req.body;

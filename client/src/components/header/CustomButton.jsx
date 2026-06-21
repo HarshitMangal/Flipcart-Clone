@@ -6,7 +6,7 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { DataContext } from '../../context/dataprovider';
 import { useSelector } from 'react-redux';
 
@@ -63,6 +63,7 @@ const NotificationButton = styled(IconButton)(({ theme }) => ({
 
 const CustomButtons = () => {
 
+    const navigate = useNavigate();
     const [moreAnchor, setMoreAnchor] = useState(null);
     const [notifAnchor, setNotifAnchor] = useState(null);
     const [notifications, setNotifications] = useState([]);
@@ -135,7 +136,7 @@ const CustomButtons = () => {
                 </LoginButton>
             }
 
-            <Typography style={{ fontSize: 14, cursor: 'pointer' }}>
+            <Typography style={{ fontSize: 14, cursor: 'pointer' }} onClick={() => navigate('/seller/onboarding')}>
                 Become a Seller
             </Typography>
 

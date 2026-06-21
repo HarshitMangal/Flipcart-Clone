@@ -39,7 +39,7 @@ const ImageThumbnail = styled('img')({
 });
 
 const AdminPanel = () => {
-    const { account } = useContext(DataContext);
+    const { account, role } = useContext(DataContext);
     const [tabIndex, setTabIndex] = useState(0);
     const [products, setProducts] = useState([]);
     const [orders, setOrders] = useState([]);
@@ -223,19 +223,42 @@ const AdminPanel = () => {
         }
     };
 
-    if (account !== 'admin') {
+    if (!account) {
         return (
             <Container>
                 <Paper style={{ padding: '50px', textAlign: 'center', margin: '80px auto', maxWidth: '600px', borderRadius: '8px' }}>
                     <Typography variant="h5" color="error" gutterBottom style={{ fontWeight: 600 }}>
-                        Access Denied 🔒
+                        Login Required 🔒
                     </Typography>
                     <Typography variant="body1" color="textSecondary" paragraph>
-                        You do not have administrative privileges to access this panel. Please login as 'admin'.
+                        You must log in to access the Seller & Admin Panel.
                     </Typography>
                     <Button variant="contained" style={{ backgroundColor: '#2874f0', color: '#fff', textTransform: 'none' }} component={Link} to="/">
                         Go to Home
                     </Button>
+                </Paper>
+            </Container>
+        );
+    }
+
+    if (role !== 'seller' && role !== 'admin') {
+        return (
+            <Container>
+                <Paper style={{ padding: '50px', textAlign: 'center', margin: '80px auto', maxWidth: '600px', borderRadius: '8px', boxShadow: '0 4px 12px 0 rgba(0, 0, 0, 0.08)' }}>
+                    <Typography variant="h5" color="error" gutterBottom style={{ fontWeight: 600 }}>
+                        Access Denied 🔒
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary" paragraph>
+                        You do not have seller privileges. To access this dashboard, please register as a seller first.
+                    </Typography>
+                    <Box display="flex" justifyContent="center" gap={2} mt={3}>
+                        <Button variant="contained" style={{ backgroundColor: '#fb641b', color: '#fff', textTransform: 'none' }} component={Link} to="/seller/onboarding">
+                            Become a Seller
+                        </Button>
+                        <Button variant="outlined" style={{ color: '#2874f0', border: '1px solid #2874f0', textTransform: 'none' }} component={Link} to="/">
+                            Back to Home
+                        </Button>
+                    </Box>
                 </Paper>
             </Container>
         );

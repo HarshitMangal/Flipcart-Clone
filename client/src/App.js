@@ -14,6 +14,7 @@ import Footer from './components/footer/Footer';
 import Wishlist from './components/wishlist/Wishlist';
 import ProfileDashboard from './components/profile/ProfileDashboard';
 import GroupBuyDetail from './components/details/GroupBuyDetail';
+import SellerOnboarding from './components/seller/SellerOnboarding';
 
 import {BrowserRouter,Routes,Route} from 'react-router-dom';
 
@@ -33,6 +34,7 @@ function App() {
           <Route path='/wishlist' element={<Wishlist />} />
           <Route path='/profile' element={<ProfileDashboard />} />
           <Route path='/group-buy/:id' element={<GroupBuyDetail />} />
+          <Route path='/seller/onboarding' element={<SellerOnboarding />} />
         </Routes>
       </Box>
       <Footer />

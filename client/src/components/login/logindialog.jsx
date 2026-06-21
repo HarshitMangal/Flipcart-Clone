@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { Dialog, DialogContent, TextField, Box, Button, Typography, styled } from '@mui/material';
 
 import { authenticateLogin, authenticateSignup, authenticateGoogleLogin, sendOtpAPI, verifyOtpAPI } from '../../service/api';
 import { GoogleLogin } from '@react-oauth/google';
+import { DataContext } from '../../context/dataprovider';
 
 const Component = styled(DialogContent)(({ theme }) => ({
     height: '70vh',
@@ -109,6 +110,7 @@ const accountInitialValues = {
 }
 
 const LoginDialog = ({ open, setOpen, setAccount }) => {
+    const { setRole } = useContext(DataContext);
     const [ login, setLogin ] = useState(loginInitialValues);
     const [ signup, setSignup ] = useState(signupInitialValues);
     const [ error, showError] = useState(false);
@@ -135,6 +137,7 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
         if(response.status === 200) {
             handleClose();
             setAccount(response.data.data.username);
+            setRole(response.data.data.role);
         } else {
             showError(true);
         }
@@ -173,6 +176,7 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
                 showError(false);
                 handleClose();
                 setAccount(response.data.data.username);
+                setRole(response.data.data.role);
             }
         } catch (err) {
             showError(true);
@@ -184,6 +188,7 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
         if(!response) return;
         handleClose();
         setAccount(response.data.data.username);
+        setRole(response.data.data.role);
     }
     
     const toggleSignup = () => {

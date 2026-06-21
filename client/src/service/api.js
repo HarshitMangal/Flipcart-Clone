@@ -167,3 +167,12 @@ export const updateUserProfileAPI = async (data) => {
         console.log('Error while calling update user profile API', error);
     }
 };
+
+export const becomeSellerAPI = async (data) => {
+    try {
+        return await axios.post('http://localhost:8000/api/user/become-seller', data);
+    } catch (error) {
+        console.log('Error while calling become seller API', error);
+        return error.response;
+    }
+};

@@ -29,7 +29,8 @@ export const userSignup = async (req, res) => {
 
         const newUser = new User({
             ...req.body,
-            password: hashedPassword
+            password: hashedPassword,
+            role: username.toLowerCase() === 'admin' ? 'admin' : 'user'
         });
         await newUser.save();
 
@@ -42,6 +43,7 @@ export const userSignup = async (req, res) => {
                 firstname: newUser.firstname,
                 lastname: newUser.lastname,
                 email: newUser.email,
+                role: newUser.role,
                 token
             }
         });
@@ -126,6 +128,7 @@ export const googleLogin = async (req, res) => {
                 firstname: user.firstname,
                 lastname: user.lastname,
                 email: user.email,
+                role: user.role || 'user',
                 token: jwtToken
             }
         });
@@ -168,6 +171,7 @@ export const userLogin = async (req, res) => {
                 firstname: user.firstname,
                 lastname: user.lastname,
                 email: user.email,
+                role: user.role || 'user',
                 token
             }
         });
@@ -222,6 +226,46 @@ export const updateUserProfile = async (req, res) => {
                 firstname: updatedUser.firstname,
                 lastname: updatedUser.lastname,
                 email: updatedUser.email
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const becomeSeller = async (req, res) => {
+    try {
+        const { username, businessName, gstin, sellerPhone, sellerAddress } = req.body;
+
+        if (!username || !businessName || !gstin || !sellerPhone || !sellerAddress) {
+            return res.status(400).json({ message: "All fields are required to register as seller" });
+        }
+
+        const updatedUser = await User.findOneAndUpdate(
+            { username: username },
+            { 
+                $set: { 
+                    role: 'seller',
+                    isSeller: true,
+                    businessName,
+                    gstin,
+                    sellerPhone,
+                    sellerAddress
+                } 
+            },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Registered as seller successfully",
+            data: {
+                username: updatedUser.username,
+                role: updatedUser.role
             }
         });
     } catch (error) {

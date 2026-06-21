@@ -47,6 +47,27 @@ const userSchema = new mongoose.Schema({
     googleId: {
         type: String
     },
+    role: {
+        type: String,
+        enum: ['user', 'seller', 'admin'],
+        default: 'user'
+    },
+    isSeller: {
+        type: Boolean,
+        default: false
+    },
+    businessName: {
+        type: String
+    },
+    gstin: {
+        type: String
+    },
+    sellerPhone: {
+        type: String
+    },
+    sellerAddress: {
+        type: String
+    },
     createdAt: {
         type: Date,
         default: Date.now,

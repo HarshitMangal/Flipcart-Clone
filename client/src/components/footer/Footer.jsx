@@ -142,7 +142,7 @@ const Footer = () => {
             {/* Bottom bar containing icons and copyright */}
             <BottomBar>
                 <Box display="flex" gap={4} flexWrap="wrap">
-                    <BottomLink href="/admin">
+                    <BottomLink href="/seller/onboarding">
                         <Store sx={{ color: '#ffe500', fontSize: '16px' }} />
                         Become a Seller
                     </BottomLink>

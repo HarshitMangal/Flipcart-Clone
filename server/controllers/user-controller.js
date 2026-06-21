@@ -242,7 +242,7 @@ export const becomeSeller = async (req, res) => {
         }
 
         const updatedUser = await User.findOneAndUpdate(
-            { username: username },
+            { username: username.toLowerCase() },
             { 
                 $set: { 
                     role: 'seller',

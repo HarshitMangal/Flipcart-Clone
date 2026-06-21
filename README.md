@@ -126,26 +126,57 @@ Open `http://localhost:3000` to view the clone.
 
 ## 💡 Key API Endpoints
 
-### User & Auth
+### 🔐 User & Auth
 * `POST /api/signup` - Register a new user account.
 * `POST /api/login` - Authenticate user credentials and issue a session.
+* `POST /api/send-otp` - Send 6-digit OTP verification email.
+* `POST /api/verify-otp` - Verify OTP to validate email address.
+* `POST /api/google-login` - Authenticate users via Google Sign-In.
 
-### Catalog
-* `GET /api/products` - Retrieve all products in the database.
+### 📦 Catalog & Reviews
+* `GET /api/products` - Retrieve all products with optional filters.
+* `GET /api/products/import` - Seed 30 DummyJSON products to database.
 * `GET /api/products/:id` - Fetch details for a specific product.
+* `GET /api/products/:id/similar` - Get 5 similar products from the same category.
+* `POST /api/products/:id/review` - Add a customer review & rating.
+* `GET /api/products/:id/reviews` - Fetch reviews written for a product.
+* `POST /api/translate` - Translate comments/reviews using Gemini AI.
 
-### Customer Operations
-* `POST /api/order/create` - Place a new order log in the system.
-* `GET /api/orders/:username` - Get orders tracking log for a particular user.
-* `POST /api/chat` - Send a message context to the Gemini AI chatbot.
+### 🛒 Cart & Checkout
+* `POST /api/order/create` - Place a new order in the database.
+* `GET /api/orders/:username` - Retrieve all orders placed by a specific user.
+* `POST /api/payment/create` - Generate a Razorpay order ID.
+* `POST /api/payment/verify` - Verify Razorpay signature and authorize transaction.
 
-### Payments
-* `POST /api/payment/create` - Initialize a Razorpay Order ID.
-* `POST /api/payment/verify` - Validate transaction signature.
+### 👥 Group Buying (Team Buy)
+* `POST /api/group-buy/create` - Create/start a new group buy session.
+* `POST /api/group-buy/join` - Join an active group buy checkout.
+* `GET /api/group-buy/active/:productId` - Get all active group buys for a product.
+* `GET /api/group-buy/:id` - Retrieve specific group buy details & team progress.
 
-### Admin Dashboard (New)
-* `GET /api/admin/orders` - Get all orders across the entire app.
-* `PUT /api/admin/orders/:id` - Change shipping status.
-* `POST /api/admin/products` - Add a new product to inventory.
-* `PUT /api/admin/products/:id` - Update stock level or detail.
-* `DELETE /api/admin/products/:id` - Remove a product from the database.
+### ❤️ Wishlist
+* `POST /api/wishlist/toggle` - Save or remove a product in the user's wishlist.
+* `GET /api/wishlist/:userId` - Get all products in a user's wishlist.
+
+### 📍 Shipping Address Manager
+* `POST /api/address/add` - Save a new shipping address.
+* `GET /api/address/:userId` - Fetch all saved addresses for a user.
+* `PUT /api/address/:id` - Edit a saved address.
+* `DELETE /api/address/:id` - Remove an address.
+
+### 🎟️ Coupons & Alerts
+* `POST /api/coupon/validate` - Validate coupon codes for order discount.
+* `POST /api/coupon/create` - Add a new coupon code (Admin only).
+* `POST /api/alerts/subscribe` - Subscribe to price drop email alerts for a product.
+* `GET /api/notifications/:username` - Get all notifications for a user.
+* `POST /api/notifications/read` - Mark all user notifications as read.
+
+### 🤖 Gemini AI Shopping Assistant
+* `POST /api/chat` - Interact with the AI assistant feed with product catalog schema.
+
+### 🛠️ Admin Dashboard
+* `GET /api/admin/orders` - Retrieve all orders across the system.
+* `PUT /api/admin/orders/:id` - Update the shipping status of an order.
+* `POST /api/admin/products` - Add a new product to database catalog.
+* `PUT /api/admin/products/:id` - Edit an existing product details or stock status.
+* `DELETE /api/admin/products/:id` - Delete a product from inventory.

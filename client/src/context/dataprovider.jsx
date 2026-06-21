@@ -14,6 +14,7 @@ const DataProvider = ({ children }) => {
             : '';
 
     const [account, setAccount] = useState(validAccount);
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
 
     const setAccountState = (name) => {
         if (!name || name === 'undefined' || name === 'null') {
@@ -30,7 +31,9 @@ const DataProvider = ({ children }) => {
         <DataContext.Provider
             value={{
                 account,
-                setAccount: setAccountState
+                setAccount: setAccountState,
+                isLoginOpen,
+                setIsLoginOpen
             }}
         >
             {children}

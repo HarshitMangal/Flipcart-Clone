@@ -63,11 +63,10 @@ const NotificationButton = styled(IconButton)(({ theme }) => ({
 
 const CustomButtons = () => {
 
-    const [open, setOpen] = useState(false);
     const [moreAnchor, setMoreAnchor] = useState(null);
     const [notifAnchor, setNotifAnchor] = useState(null);
     const [notifications, setNotifications] = useState([]);
-    const { account, setAccount } = useContext(DataContext);
+    const { account, setAccount, isLoginOpen, setIsLoginOpen } = useContext(DataContext);
 
     useEffect(() => {
         const fetchNotifications = async () => {
@@ -122,7 +121,7 @@ const CustomButtons = () => {
 
     const openDialog = (event) => {
         event.stopPropagation();
-        setOpen(true);
+        setIsLoginOpen(true);
     };
 
     return (
@@ -236,8 +235,8 @@ const CustomButtons = () => {
 
             {/* ✅ FIXED PART */}
             <LoginDialog
-                open={open}
-                setOpen={setOpen}
+                open={isLoginOpen}
+                setOpen={setIsLoginOpen}
                 setAccount={setAccount}
             />
 

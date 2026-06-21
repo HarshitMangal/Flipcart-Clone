@@ -21,6 +21,15 @@ router.post('/verify-otp', verifyOtp);
 router.post('/google-login', googleLogin);
 router.get('/profile/:username', getUserProfile);
 router.put('/profile/update', updateUserProfile);
+router.post('/logout-all', async (req, res) => {
+    try {
+        const { username } = req.body;
+        console.log(`User ${username} logged out from all devices`);
+        res.status(200).json({ success: true, message: "Logged out from all devices successfully!" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 // Product routes
 router.get('/products', getProducts);

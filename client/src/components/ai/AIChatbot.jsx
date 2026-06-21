@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Box, Paper, Typography, TextField, IconButton, Fab, Zoom, Chip, Avatar, styled } from '@mui/material';
 import { SmartToy, Close, Send, Forum } from '@mui/icons-material';
 import axios from 'axios';
+import { DataContext } from '../../context/dataprovider';
 
 // Styled Components for Premium Aesthetics
 const ChatFab = styled(Fab)`
@@ -104,6 +105,7 @@ const TypingIndicator = styled(Typography)`
 `;
 
 const AIChatbot = () => {
+    const { isLoginOpen } = useContext(DataContext);
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
         { role: 'bot', content: "Hi! 👋 I am your Flipkart AI Assistant. Ask me anything about our products, deals, or recommendations!" }
@@ -168,12 +170,14 @@ const AIChatbot = () => {
     return (
         <Box>
             {/* Floating FAB trigger */}
-            <ChatFab onClick={toggleChat} aria-label="chat">
-                {isOpen ? <Close /> : <Forum />}
-            </ChatFab>
+            {!isLoginOpen && (
+                <ChatFab onClick={toggleChat} aria-label="chat">
+                    {isOpen ? <Close /> : <Forum />}
+                </ChatFab>
+            )}
 
             {/* Chat Dialog Widget */}
-            <Zoom in={isOpen}>
+            <Zoom in={isOpen && !isLoginOpen}>
                 <ChatWindow elevation={6}>
                     {/* Header */}
                     <ChatHeader>

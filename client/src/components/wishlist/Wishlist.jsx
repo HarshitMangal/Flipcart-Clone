@@ -4,12 +4,16 @@ import { getWishlistAPI, toggleWishlistAPI } from '../../service/api';
 import { DataContext } from '../../context/dataprovider';
 import { Link } from 'react-router-dom';
 
-const Component = styled(Box)`
-    width: 80%;
-    margin: 80px auto;
-    background: #fff;
-    min-height: 50vh;
-`;
+const Component = styled(Box)(({ theme }) => ({
+    width: '80%',
+    margin: '80px auto',
+    background: '#fff',
+    minHeight: '50vh',
+    [theme.breakpoints.down('md')]: {
+        width: '95%',
+        margin: '64px auto'
+    }
+}));
 
 const Header = styled(Box)`
     padding: 15px 24px;
@@ -31,10 +35,13 @@ const ProductItem = styled(Grid)`
     align-items: center;
 `;
 
-const Image = styled('img')({
+const Image = styled('img')(({ theme }) => ({
     width: 150,
-    objectFit: 'contain'
-});
+    objectFit: 'contain',
+    [theme.breakpoints.down('sm')]: {
+        width: '100%'
+    }
+}));
 
 const RemoveButton = styled(Button)`
     margin-top: 20px;

@@ -13,7 +13,8 @@ const LeftContainer = styled(Box)(({ theme }) => ({
     padding: '40px 0 0 40px',
     position: 'relative',
     [theme.breakpoints.down('md')]: {
-        padding: '20px 20px'
+        padding: '20px 20px',
+        minWidth: 'unset'
     }
 }))
 const Image = styled('img')({
@@ -28,6 +29,15 @@ const StyledButton = styled(Button)`
     height: 50px;
     color: #FFF;
 `;
+
+const ButtonWrapper = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    gap: '8px',
+    padding: '10px 0',
+    [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column'
+    }
+}));
 
 
 const ActionItem=({ product})=>{
@@ -166,7 +176,7 @@ const ActionItem=({ product})=>{
                  <FavoriteIcon style={{ color: '#ff4343' }} />
              </IconButton>
              <Image src={product.detailUrl} /><br />
-             <Box style={{ display: 'flex', gap: '8px', padding: '10px 0' }}>
+             <ButtonWrapper>
                  <Button 
                      onClick={() => addItemToCart()} 
                      style={{ background: product.quantity === 0 ? '#cccccc' : '#ff9f00', color: '#fff', fontSize: '13px', flex: 1, height: '48px', textTransform: 'none', borderRadius: '2px' }} 
@@ -191,7 +201,7 @@ const ActionItem=({ product})=>{
                  >
                      Start Group Buy (-15%)
                  </Button>
-             </Box>
+             </ButtonWrapper>
          </LeftContainer>
      )
 }

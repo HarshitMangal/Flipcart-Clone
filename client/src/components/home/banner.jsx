@@ -2,7 +2,8 @@
 import Carousel from 'react-multi-carousel';
 import { bannerData } from '../../constants/data';
 import "react-multi-carousel/lib/styles.css";
-// import {style} from './home.module.css';
+import { styled } from '@mui/material';
+
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
@@ -18,7 +19,17 @@ const responsive = {
   }
 };
 
-
+const Image = styled('img')(({ theme }) => ({
+  width: '100%',
+  height: 280,
+  objectFit: 'cover',
+  [theme.breakpoints.down('md')]: {
+    height: 180
+  },
+  [theme.breakpoints.down('sm')]: {
+    height: 150
+  }
+}));
 
 const Banner=()=>{
     return(
@@ -35,9 +46,9 @@ const Banner=()=>{
               slidesToSlide={1}
        >
          {
-        bannerData.map((data)=>{
+        bannerData.map((data, index)=>{
           return(
-            <img src={data.url} alt="banner" style={{width:'100%', height:280}} />
+            <Image src={data.url} alt="banner" key={index} />
           )
         })
          }

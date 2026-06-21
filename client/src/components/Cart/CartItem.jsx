@@ -4,17 +4,26 @@ import { Card, Box, Typography, Button, styled } from '@mui/material';
 import { addEllipsis } from '../../utils/util';
 import GroupButton from './GroupButton';
 
-const Component = styled(Card)`
-    border-top: 1px solid #f0f0f0;
-    border-radius: 0px;
-    display: flex;
-`;
+const Component = styled(Card)(({ theme }) => ({
+    borderTop: '1px solid #f0f0f0',
+    borderRadius: '0px',
+    display: 'flex',
+    [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '10px'
+    }
+}));
 
-const LeftComponent = styled(Box)`
-    margin: 20px; 
-    display: flex;
-    flex-direction: column;
-`;
+const LeftComponent = styled(Box)(({ theme }) => ({
+    margin: '20px', 
+    display: 'flex',
+    flexDirection: 'column',
+    [theme.breakpoints.down('sm')]: {
+        margin: '10px 0',
+        alignItems: 'center'
+    }
+}));
 
 const SmallText = styled(Typography)`
     color: #878787;

@@ -14,10 +14,13 @@ Welcome to the **Flipkart Clone**, a premium, full-featured, and modern e-commer
 ### 2. Advanced Integrations
 * **💳 Razorpay Payment Gateway**: Features a backend-authenticated Razorpay API flow verifying checkout payments securely.
 * **🤖 Gemini AI Chatbot Assistant**: A floating interactive shopping assistant powered by Google Gemini (using the `@google/generative-ai` SDK). It feeds on the store's current MongoDB inventory to provide real-time suggestions and alternatives for out-of-stock items. Fallback offline mockup mode is active if no API key is configured.
+* **👥 Group Buying (Team Buy) System**: Buy products at a 15% discount by starting or joining group buy teams! Integrates with Razorpay payments and checks order completeness status dynamically.
 * **📄 Print-ready Tax Invoices**: Generates a professional tax invoice directly from the client-side *My Orders* page using native print layouts, easily exportable as PDF.
 
 ### 3. Management & Security
-* **🔒 Custom Authentication**: Secure JWT-based User Signup and Login dialogues with schema validation.
+* **🔒 Custom Authentication**: Secure JWT-based User Signup and Login dialogues with OTP verification & Google OAuth integration.
+* **👤 Profile & Address Manager (`/profile`)**: Manage user profile information and save multiple shipping addresses (Home/Work) with default selections.
+* **❤️ Saved Wishlist (`/wishlist`)**: Save and manage products to purchase later, with single-click additions directly from product pages.
 * **🛠️ Admin Dashboard (`/admin`)**:
   - **Inventory CRUD**: Add new items, update stock count, delete products, or import seed data from external APIs (DummyJSON API integration).
   - **Order Shipping Workflow**: Track all customer orders and update shipping statuses (`Ordered` ➡️ `Shipped` ➡️ `Out for Delivery` ➡️ `Delivered`). Modifying the status dynamically updates the customer's delivery progress bar!

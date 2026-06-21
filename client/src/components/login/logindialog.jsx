@@ -5,12 +5,16 @@ import { Dialog, DialogContent, TextField, Box, Button, Typography, styled } fro
 import { authenticateLogin, authenticateSignup, authenticateGoogleLogin, sendOtpAPI, verifyOtpAPI } from '../../service/api';
 import { GoogleLogin } from '@react-oauth/google';
 
-const Component = styled(DialogContent)`
-    height: 70vh;
-    width: 90vh;
-    padding: 0;
-    padding-top: 0;
-`;
+const Component = styled(DialogContent)(({ theme }) => ({
+    height: '70vh',
+    width: '90vh',
+    padding: 0,
+    paddingTop: 0,
+    [theme.breakpoints.down('md')]: {
+        width: '100%',
+        height: 'auto'
+    }
+}));
 
 const LoginButton = styled(Button)`
     text-transform: none;
@@ -43,16 +47,16 @@ const CreateAccount = styled(Typography)`
     cursor: pointer
 `
 
-const Wrapper = styled(Box)`
-    padding: 25px 35px;
-    display: flex;
-    flex: 1;
-    overflow: auto;
-    flex-direction: column;
-    & > div, & > button, & > p {
-        margin-top: 20px;
+const Wrapper = styled(Box)(({ theme }) => ({
+    padding: '25px 35px',
+    display: 'flex',
+    flex: 1,
+    overflow: 'auto',
+    flexDirection: 'column',
+    '& > div, & > button, & > p': {
+        marginTop: '20px'
     }
-`;
+}));
 
 const Error = styled(Typography)`
     font-size: 10px;
@@ -63,16 +67,19 @@ const Error = styled(Typography)`
 `
 // height: 70vh;
     
-const Image = styled(Box)`
-    background: #2874f0 url(https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/login_img_c4a81e.png) center 85% no-repeat;
-    width: 40%;
-    height: 100%;
-    padding: 45px 35px;
-    & > p, & > h5 {
-        color: #FFFFFF;
-        font-weight: 600
+const Image = styled(Box)(({ theme }) => ({
+    background: '#2874f0 url(https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/login_img_c4a81e.png) center 85% no-repeat',
+    width: '40%',
+    height: '100%',
+    padding: '45px 35px',
+    '& > p, & > h5': {
+        color: '#FFFFFF',
+        fontWeight: 600
+    },
+    [theme.breakpoints.down('md')]: {
+        display: 'none'
     }
-`;
+}));
 
 const loginInitialValues = {
     username: '',

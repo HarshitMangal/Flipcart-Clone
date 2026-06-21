@@ -3,20 +3,27 @@
  import { navData} from '../../constants/data';
  
 
-const Components = styled(Box)`
-    display: flex;
-    justify-content: space-between;
-    margin: 55px 130px 0 130px;
-    test-align: center;
-`;
-const Container=styled(Box)`
-padding: 12px 8px;
-text-align: center;
-`
+const Components = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    justifyContent: 'space-between',
+    margin: '55px 130px 0 130px',
+    textAlign: 'center',
+    overflowX: 'auto',
+    [theme.breakpoints.down('lg')]: {
+        margin: '55px 0 0 0'
+    }
+}));
+
+const Container = styled(Box)(({ theme }) => ({
+    padding: '12px 8px',
+    textAlign: 'center',
+    flexShrink: 0
+}));
+
 const Text = styled(Typography)`
-font-size: 14px;
-font-weight: 600;
-font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
 `;
 const NavBar = () => {
     return (

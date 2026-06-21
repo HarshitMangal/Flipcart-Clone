@@ -15,8 +15,9 @@ import axios from 'axios';
 const Component = styled(Grid)(({ theme }) => ({
     padding: '20px 40px',
     display: 'flex',
-    [theme.breakpoints.down('sm')]: {
-        padding: '15px 0'
+    [theme.breakpoints.down('md')]: {
+        padding: '15px 0',
+        flexDirection: 'column'
     }
 }));
 

@@ -11,23 +11,36 @@ margin: 20px 0;
 background: #FFFFFF;
 `;
 
-const Deal=styled(Box)`
-padding: 15px 20px;
-display: flex;
-`;
-const Timer=styled(Box)`
-display: flex;
-margin-left: 10px;
-align-items: center;
-color: #7f7f7f;
-`;
+const Deal = styled(Box)(({ theme }) => ({
+    padding: '15px 20px',
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+        flexWrap: 'wrap',
+        gap: '10px'
+    }
+}));
 
-const DealText = styled(Typography)`
-font-size: 22px;
-font-weight: 600;
-margin-right: 25px;
-line-height: 32px;
-`;
+const Timer = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    marginLeft: '10px',
+    alignItems: 'center',
+    color: '#7f7f7f',
+    [theme.breakpoints.down('sm')]: {
+        marginLeft: 0
+    }
+}));
+
+const DealText = styled(Typography)(({ theme }) => ({
+    fontSize: '22px',
+    fontWeight: 600,
+    marginRight: '25px',
+    lineHeight: '32px',
+    [theme.breakpoints.down('sm')]: {
+        fontSize: '16px',
+        marginRight: '10px'
+    }
+}));
 
 const ViewAllButton = styled(Button)`
 margin-left: auto;

@@ -7,13 +7,21 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 
-const SearchContainer = styled(Box)`
-  background: #fff;
-  width: 38%;
-  border-radius: 2px;
-  margin-left: 25px;
-  display: flex;
-`;
+const SearchContainer = styled(Box)(({ theme }) => ({
+  background: '#fff',
+  width: '38%',
+  borderRadius: '2px',
+  marginLeft: '25px',
+  display: 'flex',
+  [theme.breakpoints.down('md')]: {
+    width: '60%',
+    marginLeft: '10px'
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    marginLeft: '5px'
+  }
+}));
 
 const InputSearchBase = styled(InputBase)`
   padding-left: 20px;
@@ -23,15 +31,25 @@ const InputSearchBase = styled(InputBase)`
 
 const SearchIconWrapper = styled(Box)`
   color: #2874f0;
+  padding: 5px;
+  display: flex;
+  align-items: center;
 `;
 
-const ListWrapper = styled(List)`
-  position: absolute;
-  color: #000;
-  background: #FFFFFF;
-  margin-top: 36px;
-  width: 38%;
-`;
+const ListWrapper = styled(List)(({ theme }) => ({
+  position: 'absolute',
+  color: '#000',
+  background: '#FFFFFF',
+  marginTop: '36px',
+  width: '38%',
+  zIndex: 10,
+  [theme.breakpoints.down('md')]: {
+    width: '60%'
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '100%'
+  }
+}));
 
 
 const Search = () => {

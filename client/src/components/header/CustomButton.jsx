@@ -18,7 +18,10 @@ const Container = styled(Link)(({ theme }) => ({
     textDecoration: 'none',
     color: '#fff',
     alignItems: 'center',
-    gap: '8px'
+    gap: '8px',
+    [theme.breakpoints.down('sm')]: {
+        color: '#2874f0'
+    }
 }));
 
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -27,19 +30,36 @@ const Wrapper = styled(Box)(({ theme }) => ({
     alignItems: 'center',
     gap: '40px',
     [theme.breakpoints.down('sm')]: {
-        gap: '20px'
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap: '20px',
+        width: '100%',
+        padding: '10px'
     }
 }));
 
-const LoginButton = styled(Button)`
-  color: #2874f0;
-  background: #fff;
-  text-transform: none;
-  font-weight: 600;
-  border-radius: 2px;
-  padding: 5px 25px;
-  height: 32px;
-`;
+const LoginButton = styled(Button)(({ theme }) => ({
+  color: '#2874f0',
+  background: '#fff',
+  textTransform: 'none',
+  fontWeight: 600,
+  borderRadius: '2px',
+  padding: '5px 25px',
+  height: '32px',
+  [theme.breakpoints.down('sm')]: {
+      background: '#2874f0',
+      color: '#fff'
+  }
+}));
+
+const NotificationButton = styled(IconButton)(({ theme }) => ({
+    color: '#fff',
+    padding: '6px',
+    cursor: 'pointer',
+    [theme.breakpoints.down('sm')]: {
+        color: '#2874f0'
+    }
+}));
 
 const CustomButtons = () => {
 
@@ -71,6 +91,7 @@ const CustomButtons = () => {
     const unreadCount = notifications.filter(n => !n.isRead).length;
 
     const handleMoreClick = (event) => {
+        event.stopPropagation();
         setMoreAnchor(event.currentTarget);
     };
 
@@ -79,6 +100,7 @@ const CustomButtons = () => {
     };
 
     const handleNotifClick = (event) => {
+        event.stopPropagation();
         setNotifAnchor(event.currentTarget);
     };
 
@@ -98,7 +120,8 @@ const CustomButtons = () => {
     const cartDetails = useSelector(state => state.cart);
     const { cartItems } = cartDetails;
 
-    const openDialog = () => {
+    const openDialog = (event) => {
+        event.stopPropagation();
         setOpen(true);
     };
 
@@ -140,14 +163,11 @@ const CustomButtons = () => {
             {/* Notification Bell Icon */}
             {account && (
                 <>
-                    <IconButton 
-                        onClick={handleNotifClick} 
-                        style={{ color: '#fff', padding: '6px', cursor: 'pointer' }}
-                    >
+                    <NotificationButton onClick={handleNotifClick}>
                         <Badge badgeContent={unreadCount} color="error">
                             <NotificationsIcon />
                         </Badge>
-                    </IconButton>
+                    </NotificationButton>
 
                     <Menu
                         anchorEl={notifAnchor}

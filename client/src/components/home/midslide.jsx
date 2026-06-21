@@ -5,18 +5,24 @@ const Component = styled(Box)`
   display: flex;
 `;
 
-const Leftcomponent = styled(Box)`
-  width: 83%;
-`;
+const Leftcomponent = styled(Box)(({ theme }) => ({
+  width: '83%',
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
+  }
+}));
 
-const Rightcomponent = styled(Box)`
-  margin-top: 10px;
-  background: #FFFFFF;
-  width: 17%;
-  margin-left: 10px;
-  padding: 5px;
-  text-align: center;
-`;
+const Rightcomponent = styled(Box)(({ theme }) => ({
+  marginTop: '10px',
+  background: '#FFFFFF',
+  width: '17%',
+  marginLeft: '10px',
+  padding: '5px',
+  textAlign: 'center',
+  [theme.breakpoints.down('md')]: {
+    display: 'none'
+  }
+}));
 
 const Midslide = ({ products, title, timer }) => {
   const adURL =

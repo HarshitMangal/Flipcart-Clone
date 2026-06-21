@@ -6,11 +6,14 @@ import axios from 'axios';
 import DownloadIcon from '@mui/icons-material/Download';
 
 // Styled Components for Modern Aesthetics
-const Container = styled(Box)`
-    padding: 30px 8%;
-    background-color: #f1f3f6;
-    min-height: 90vh;
-`;
+const Container = styled(Box)(({ theme }) => ({
+    padding: '30px 8%',
+    backgroundColor: '#f1f3f6',
+    minHeight: '90vh',
+    [theme.breakpoints.down('md')]: {
+        padding: '15px 10px'
+    }
+}));
 
 const HeaderTitle = styled(Typography)`
     font-size: 22px;
@@ -56,6 +59,14 @@ const EmptyContainer = styled(Paper)`
     box-shadow: none;
     border: 1px solid #dbdbdb;
 `;
+
+const ActionWrapper = styled(Grid)(({ theme }) => ({
+    textAlign: 'right',
+    [theme.breakpoints.down('md')]: {
+        textAlign: 'left',
+        marginTop: '15px'
+    }
+}));
 
 
 
@@ -394,7 +405,7 @@ const OrderHistory = () => {
                                 </Grid>
 
                                 {/* Order summary total */}
-                                <Grid item xs={12} md={2} style={{ textAlign: 'right' }}>
+                                <ActionWrapper item xs={12} md={2}>
                                     <Box display="flex" flexDirection="column">
                                         <Typography variant="caption" color="textSecondary">
                                             Total Amount
@@ -424,7 +435,7 @@ const OrderHistory = () => {
                                             Download Invoice
                                         </Button>
                                     </Box>
-                                </Grid>
+                                </ActionWrapper>
                             </Grid>
                         </CardContent>
                     </OrderCard>

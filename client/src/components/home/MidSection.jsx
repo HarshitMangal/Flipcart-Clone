@@ -6,20 +6,30 @@ const ImageURL = [
   'https://rukminim1.flixcart.com/flap/960/960/image/1ce0c4c1fb501b45.jpg?q=50'
 ];
 
-const Wrapper = styled(Box)`
-  display: flex;
-  margin-top: 20px;
-  gap: 10px;
-`;
+const Wrapper = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  marginTop: '20px',
+  gap: '10px',
+  [theme.breakpoints.down('md')]: {
+    flexDirection: 'column'
+  }
+}));
 
-const SmallImage = styled('img')`
-  width: 33.3%;
-`;
+const SmallImage = styled('img')(({ theme }) => ({
+  width: '33.3%',
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
+  }
+}));
 
-const LargeImage = styled('img')`
-  width: 100%;
-  margin-top: 20px;
-`;
+const LargeImage = styled('img')(({ theme }) => ({
+  width: '100%',
+  marginTop: '20px',
+  [theme.breakpoints.down('md')]: {
+    height: 150,
+    objectFit: 'cover'
+  }
+}));
 
 const MidSection = () => {
 

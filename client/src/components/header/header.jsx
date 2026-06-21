@@ -14,12 +14,15 @@ const StyledHeader = styled(AppBar)`
     height: 55px;
 `;
 
-const Component = styled(Link)`
-    margin-left: 12%;
-    line-height: 0;
-    color: #FFFFFF;
-    text-decoration: none;
-`;
+const Component = styled(Link)(({ theme }) => ({
+    marginLeft: '12%',
+    lineHeight: 0,
+    color: '#FFFFFF',
+    textDecoration: 'none',
+    [theme.breakpoints.down('sm')]: {
+        marginLeft: 0
+    }
+}));
 
 const SubHeading = styled(Typography)`
     font-size: 10px;

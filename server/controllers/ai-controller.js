@@ -46,10 +46,18 @@ Guidelines:
             // Map frontend message format to Gemini chat history format
             // Frontend: [{ role: 'user'/'bot', content: '...' }]
             // Gemini expects: role: 'user' or 'model'
-            const history = messages.slice(0, -1).map(msg => ({
+            let history = messages.slice(0, -1).map(msg => ({
                 role: msg.role === 'bot' ? 'model' : 'user',
                 parts: [{ text: msg.content }]
             }));
+
+            // Gemini requires the first message in the chat history to be from 'user'
+            const firstUserIdx = history.findIndex(msg => msg.role === 'user');
+            if (firstUserIdx !== -1) {
+                history = history.slice(firstUserIdx);
+            } else {
+                history = [];
+            }
 
             const chat = model.startChat({
                 history: history

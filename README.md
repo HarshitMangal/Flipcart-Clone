@@ -1,6 +1,7 @@
 # 🛒 Flipkart Clone (MERN Stack with Gemini AI & Payments)
 
-🔗 **Live Demo**: [https://flipcart-clone-mu.vercel.app](https://flipcart-clone-mu.vercel.app)
+🔗 **Live Demo (ShopSphere - E-Commerce)**: [https://flipcart-clone-mu.vercel.app](https://flipcart-clone-mu.vercel.app)  
+🔗 **Live Demo (Haven - Vacation Rental)**: [https://major-project-wht3.onrender.com](https://major-project-wht3.onrender.com)
 
 Welcome to the **Flipkart Clone**, a premium, full-featured, and modern e-commerce web application built using the MERN (MongoDB, Express, React, Node) stack. This project replicates Flipkart's classic user interface and includes advanced integrations like **Razorpay Payments**, an **interactive Gemini AI Shopping Assistant**, and a fully-functioning **Admin Control Dashboard**.
 

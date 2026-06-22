@@ -1,10 +1,18 @@
-
 import Product from '../model/product-schema.js';
+import { getCache, setCache } from '../config/redis.js';
+
 export const getProducts = async (req, res) => {
     try {
-        const { category, minPrice, maxPrice, sort } = req.query;
-        let query = {};
+        const { category, minPrice, maxPrice, sort, page, limit } = req.query;
         
+        const cacheKey = `products:query:${category || ''}_${minPrice || ''}_${maxPrice || ''}_${sort || ''}_${page || ''}_${limit || ''}`;
+        
+        const cachedData = await getCache(cacheKey);
+        if (cachedData) {
+            return res.status(200).json(cachedData);
+        }
+
+        let query = {};
         if (category) {
             query['title.shortTitle'] = new RegExp(category, 'i');
         }
@@ -19,8 +27,29 @@ export const getProducts = async (req, res) => {
         if (sort === 'lowToHigh') sortObj['price.cost'] = 1;
         else if (sort === 'highToLow') sortObj['price.cost'] = -1;
         
-        const products = await Product.find(query).sort(sortObj);
-        res.status(200).json(products);
+        let responseData;
+
+        if (page && limit) {
+            const pageNum = Number(page) || 1;
+            const limitNum = Number(limit) || 10;
+            const skip = (pageNum - 1) * limitNum;
+            
+            const products = await Product.find(query).sort(sortObj).skip(skip).limit(limitNum);
+            const totalProducts = await Product.countDocuments(query);
+            
+            responseData = {
+                products,
+                currentPage: pageNum,
+                totalPages: Math.ceil(totalProducts / limitNum),
+                totalProducts
+            };
+        } else {
+            responseData = await Product.find(query).sort(sortObj);
+        }
+
+        await setCache(cacheKey, responseData, 3600);
+
+        res.status(200).json(responseData);
     } catch (error) {
         console.error("Error while fetching products", error);
         res.status(500).json({ message: "Error while fetching products" });
@@ -31,11 +60,21 @@ export const getProducts = async (req, res) => {
 export const getProductById=async(req,res)=>{
     try{
       const id=req.params.id;
-   const products=  await  Product.findOne({'id':id})
-    res.status(200).json(products);
+      const cacheKey = `product:${id}`;
+      
+      const cachedProduct = await getCache(cacheKey);
+      if (cachedProduct) {
+          return res.status(200).json(cachedProduct);
+      }
+      
+      const product = await Product.findOne({'id':id});
+      if (product) {
+          await setCache(cacheKey, product, 3600);
+      }
+      res.status(200).json(product);
     }
     catch(error){
-     res.status(500).json({ message: error.message});
+      res.status(500).json({ message: error.message});
     }
 }
 
@@ -59,7 +98,6 @@ export const getSimilarProducts = async (req, res) => {
 
 export const importProducts = async (req, res) => {
     try {
-        // Fetch 30 products from DummyJSON using native fetch
         const apiResponse = await fetch('https://dummyjson.com/products?limit=30');
         const data = await apiResponse.json();
 
@@ -67,10 +105,9 @@ export const importProducts = async (req, res) => {
             return res.status(400).json({ message: "Failed to fetch products from external API" });
         }
 
-        // Map DummyJSON products to Flipkart product schema
         const mappedProducts = data.products.map(item => {
-            const costPrice = Math.round(item.price * 83); // USD to INR conversion
-            const mrpPrice = Math.round(costPrice * 1.25);  // Add 25% markup to create MRP
+            const costPrice = Math.round(item.price * 83);
+            const mrpPrice = Math.round(costPrice * 1.25);
 
             return {
                 id: `dummy_${item.id}`,
@@ -92,10 +129,7 @@ export const importProducts = async (req, res) => {
             };
         });
 
-        // Delete existing dummy products first to prevent duplicates
         await Product.deleteMany({ id: { $regex: /^dummy_/ } });
-
-        // Insert mapped products into MongoDB
         await Product.insertMany(mappedProducts);
 
         res.status(200).json({

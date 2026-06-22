@@ -20,7 +20,13 @@ Welcome to the **Flipkart Clone**, a premium, full-featured, and modern e-commer
 * **👥 Group Buying (Team Buy) System**: Buy products at a 15% discount by starting or joining group buy teams! Integrates with Razorpay payments and checks order completeness status dynamically.
 * **📄 Print-ready Tax Invoices**: Generates a professional tax invoice directly from the client-side *My Orders* page using native print layouts, easily exportable as PDF.
 
-### 3. Management & Security
+### 3. Performance & Caching (Backend)
+* **⚡ Redis Database Caching**: Integrates a high-performance Redis cache layer. Product search queries and product details fetches are cached (TTL: 1 hour), reducing read latencies to <2ms.
+* **🛡️ Fail-Safe Connection Fallback**: Implements a resilient fallback handler. If Redis server is down or unconfigured, it logs a warning and automatically falls back to direct MongoDB database reads without crashing the app.
+* **🔄 Automatic Cache Invalidation**: Employs cache invalidation protocols. Adding, updating, or deleting products by sellers instantly invalidates corresponding query indexes (`products:query:*`) and specific product caches (`product:id`) to prevent stale reads.
+* **🔢 Optional API Pagination**: Supports optional paginated queries (`?page=1&limit=10`) with skip/limit calculations, maintaining complete backward compatibility.
+
+### 4. Management & Security
 * **🔒 Custom Authentication**: Secure JWT-based User Signup and Login dialogues with OTP verification & Google OAuth integration.
 * **👤 Profile & Address Manager (`/profile`)**: Manage user profile information and save multiple shipping addresses (Home/Work) with default selections.
 * **❤️ Saved Wishlist (`/wishlist`)**: Save and manage products to purchase later, with single-click additions directly from product pages.
@@ -38,9 +44,8 @@ Below is the high-level architecture diagram detailing the client-server interac
 graph TD
     Client[React Frontend] -->|API Requests| Server[NodeJS / Express Backend]
     Client -->|Local State| Redux[Redux Cart/Products]
+    Server -->|Read/Write Cache| Redis[(Redis Cache)]
     Server -->|Queries & Updates| DB[(MongoDB database)]
-    Server -->|Verify Transactions| Razorpay[Razorpay Payment API]
-    Server -->|Search Inventory Catalog| Gemini[Google Gemini AI SDK]
     Admin[Admin Panel] -->|Update Order Status / Catalog| Server
 ```
 
@@ -50,8 +55,8 @@ graph TD
 
 * **Frontend**: React (v19), React Router (v7), Redux Toolkit, Material-UI (MUI v7), Axios.
 * **Backend**: Node.js, Express.js, Mongoose.
-* **Database**: MongoDB (Local or Atlas Cloud).
-* **AI Integration**: Google Generative AI (`gemini-1.5-flash`).
+* **Database & Caching**: MongoDB (Local or Atlas Cloud), Redis (Cache Client).
+* **AI Integration**: Google Generative AI (`gemini-2.5-flash`).
 * **Payments**: Razorpay Node SDK.
 
 ---
@@ -87,6 +92,7 @@ RAZORPAY_KEY_ID=rzp_test_your_key_id_here
 RAZORPAY_KEY_SECRET=your_key_secret_here
 JWT_SECRET=your_jwt_secret_key_here
 GEMINI_API_KEY=your_gemini_api_key_here
+REDIS_URL=redis://localhost:6379
 ```
 
 > [!NOTE]

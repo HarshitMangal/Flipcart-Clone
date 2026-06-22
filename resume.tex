@@ -1,0 +1,179 @@
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.0in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge Harshit Mangal} \\ \vspace{3pt}
+    \small +91-7413021531 $|$ 
+    \href{mailto:mangalharsh54@gmail.com}{\underline{mangalharsh54@gmail.com}} $|$ 
+    \href{https://linkedin.com/in/harshit-mangal}{\underline{linkedin.com/in/harshit-mangal}} $|$ 
+    \href{https://github.com/harshitmangal}{\underline{github.com/harshitmangal}}
+\end{center}
+
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {MBM University}{Jodhpur, Rajasthan}
+      {Bachelor of Technology in Information Technology $|$ CGPA: 7.5 (Ongoing)}{\textnormal{Aug. 2023 -- May 2027}}
+  \resumeSubHeadingListEnd
+
+
+%-----------PROJECTS-----------
+\section{Projects}
+  \resumeSubHeadingListStart
+    \resumeProjectHeading
+      {\textbf{ShopSphere} $|$ \href{https://flipcart-clone-mu.vercel.app/}{\underline{Live Link}} $|$ \href{https://github.com/HarshitMangal/Flipcart-Clone}{\underline{GitHub}} $|$ \emph{MongoDB, Express, React, Node.js, Redux}}{2026}
+      \resumeItemListStart
+        \resumeItem{Developed a full-stack e-commerce platform integrating a stateful \textbf{Google Gemini 2.5 Flash AI Assistant} for catalog recommendation queries, backed by a \textbf{fail-safe Redis caching layer} reducing query response latency by 90\% to <2ms.}
+        \resumeItem{Implemented secure user authentication and seller registration leveraging \textbf{JWT (JSON Web Tokens)} and Google OAuth, designing a custom \textbf{Seller Onboarding Flow} with GSTIN verification.}
+        \resumeItem{Integrated a backend-verified checkout flow using \textbf{Razorpay Payments API} with SHA-256 HMAC cryptographic signature checks to prevent client-side transaction tampering.}
+        \resumeItem{Built a social \textbf{Group Buying (Team Buy) system} validating user team completions to dynamically apply checkout discount rates.}
+      \resumeItemListEnd
+
+    \resumeProjectHeading
+      {\textbf{Haven} $|$ \href{https://major-project-wht3.onrender.com/}{\underline{Live Link}} $|$ \href{https://github.com/HarshitMangal/major_project}{\underline{GitHub}} $|$ \emph{EJS, Node.js, Express, MongoDB}}{2025}
+      \resumeItemListStart
+        \resumeItem{Developed a full-stack property rental platform using EJS for server-side rendering and Node.js/Express.js backend.}
+        \resumeItem{Implemented secure user authentication, property listings creation, and booking workflows with MongoDB data persistence.}
+        \resumeItem{Designed RESTful API endpoints for handling property filters, ratings, and customer reviews.}
+        \resumeItem{Built a responsive UI ensuring smooth user experience across devices.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Frontend Web Development Intern}{June 2025 -- July 2025}
+      {CodTech IT Solutions Pvt. Ltd.}{Remote}
+      \resumeItemListStart
+        \resumeItem{Independently built 3 production-grade projects: a real-time chat application, an interactive quiz app, and a responsive e-learning platform UI — delivering all within a 2-month timeline.}
+        \resumeItem{Implemented cross-browser compatible, mobile-first UI components using HTML, CSS, and JavaScript; integrated REST APIs and followed Git-based collaborative workflows.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.0in, label={}]
+    \small{\item{
+     \textbf{Languages}: Python, C++, C, Java, JavaScript, SQL \\
+     \textbf{Web \& Frameworks}: HTML, CSS, React, Redux Toolkit, Node.js, Express, Tailwind CSS, EJS, Mongoose \\
+     \textbf{Databases}: SQLite, MySQL, MongoDB \\
+     \textbf{Developer Tools \& Cloud}: Git, GitHub, Docker (Basics), Postman, Render, Vercel, Heroku, Linux, POSIX \\
+     \textbf{CS Fundamentals}: Data Structures \& Algorithms, Object-Oriented Programming (OOPs), Database Management Systems (DBMS), Operating Systems (OS), RESTful APIs, MVC Architecture
+    }}
+ \end{itemize}
+
+
+%-----------CODING PROFILES-----------
+\section{Coding Profiles}
+  \resumeSubHeadingListStart
+    \resumeProjectHeading
+      {\textbf{LeetCode} $|$ \href{https://leetcode.com/u/Harshit_mangal/}{\underline{Profile}}}{2023 -- Present}
+      \resumeItemListStart
+        \resumeItem{1100+ Problems Solved $|$ Contest Rating: 1747}
+      \resumeItemListEnd
+    \resumeProjectHeading
+      {\textbf{GeeksforGeeks} $|$ \href{https://www.geeksforgeeks.org/profile/mangalhaqw0dinko}{\underline{Profile}}}{2023 -- Present}
+      \resumeItemListStart
+        \resumeItem{1000+ Problems Solved $|$ College Rank 1}
+        \resumeItem{Completed 160 Days of Problem Solving Challenge (2025)}
+      \resumeItemListEnd
+    \resumeProjectHeading
+      {\textbf{InterviewBit} $|$ \href{https://www.interviewbit.com/profile/}{\underline{Profile}}}{2023 -- Present}
+      \resumeItemListStart
+        \resumeItem{Consistent DSA practice across arrays, trees, graphs, and dynamic programming}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+
+%-----------CERTIFICATIONS-----------
+\section{Certifications}
+  \begin{itemize}[leftmargin=0.0in, label={}]
+    \small{\item{
+      \href{https://media.geeksforgeeks.org/courses/certificates/22a599fc4a5676f802aa4a2ee4cc3c7f.pdf}{\underline{160 Days of Problem Solving}} -- GeeksforGeeks (2025) \\ \vspace{2pt}
+      \href{https://www.hackerrank.com/certificates/227251652361}{\underline{HackerRank Basic Certification}} -- HackerRank (2026) \\ \vspace{2pt}
+      \href{https://www.hackerrank.com/certificates/9fe36f33fe64}{\underline{HackerRank Certification}} -- HackerRank (2026)
+    }}
+  \end{itemize}
+
+\end{document}

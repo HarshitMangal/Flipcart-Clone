@@ -1,4 +1,4 @@
-aimport Order from "../model/order-schema.js";
+import Order from "../model/order-schema.js";
 import Product from "../model/product-schema.js";
 import PriceAlert from "../model/price-alert-schema.js";
 import Notification from "../model/notification-schema.js";

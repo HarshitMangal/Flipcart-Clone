@@ -90,7 +90,7 @@ const Cart = () => {
                 key: key,
                 amount: amount,
                 currency: currency,
-                name: 'Flipcart',
+                name: 'ShopSphere',
                 description: 'Order Payment',
                 order_id: orderId,
                 handler: async function (paymentResponse) {

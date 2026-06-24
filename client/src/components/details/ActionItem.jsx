@@ -76,7 +76,7 @@ const ActionItem=({ product})=>{
                  key: key,
                  amount: amount,
                  currency: currency,
-                 name: 'Flipcart',
+                 name: 'ShopSphere',
                  description: isGroupBuy ? 'Group Buy Payment' : 'Direct Order Payment',
                  order_id: orderId,
                  handler: async function (paymentResponse) {

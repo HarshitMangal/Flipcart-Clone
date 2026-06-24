@@ -6,7 +6,7 @@ import { OAuth2Client } from "google-auth-library";
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-const JWT_SECRET = process.env.JWT_SECRET || "flipcart_jwt_secret";
+const JWT_SECRET = process.env.JWT_SECRET || "shopsphere_jwt_secret";
 
 export const userSignup = async (req, res) => {
     try {

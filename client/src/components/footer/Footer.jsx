@@ -72,7 +72,7 @@ const Footer = () => {
                     <FooterLink href="#">Contact Us</FooterLink>
                     <FooterLink href="#">About Us</FooterLink>
                     <FooterLink href="#">Careers</FooterLink>
-                    <FooterLink href="#">Flipkart Stories</FooterLink>
+                    <FooterLink href="#">ShopSphere Stories</FooterLink>
                     <FooterLink href="#">Press</FooterLink>
                     <FooterLink href="#">Corporate Information</FooterLink>
                 </Grid>
@@ -114,7 +114,7 @@ const Footer = () => {
                 <Grid item xs={12} sm={6} md={1.75}>
                     <ColumnTitle>Mail Us:</ColumnTitle>
                     <AddressText>
-                        Flipkart Internet Private Limited,<br />
+                        ShopSphere Internet Private Limited,<br />
                         Buildings Alyssa, Begonia &<br />
                         Clove Embassy Tech Village,<br />
                         Outer Ring Road, Devarabeesanahalli Village,<br />
@@ -127,7 +127,7 @@ const Footer = () => {
                 <Grid item xs={12} sm={6} md={1.75}>
                     <ColumnTitle>Registered Office Address:</ColumnTitle>
                     <AddressText>
-                        Flipkart Internet Private Limited,<br />
+                        ShopSphere Internet Private Limited,<br />
                         Buildings Alyssa, Begonia &<br />
                         Clove Embassy Tech Village,<br />
                         Outer Ring Road, Devarabeesanahalli Village,<br />
@@ -161,7 +161,7 @@ const Footer = () => {
                 </Box>
 
                 <Typography style={{ color: '#fff', fontSize: '12px' }}>
-                    © 2007-2026 FlipkartClone.com. All rights reserved.
+                    © 2007-2026 ShopSphere.com. All rights reserved.
                 </Typography>
 
                 <Box display="flex" gap={2} alignItems="center">

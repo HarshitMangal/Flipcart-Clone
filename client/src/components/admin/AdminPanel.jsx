@@ -123,7 +123,7 @@ const AdminPanel = () => {
 
     // 3b. Default Flipkart products restore/reset karna
     const handleResetProducts = async () => {
-        if (!window.confirm("Are you sure you want to delete current products and restore all default Flipkart products?")) return;
+        if (!window.confirm("Are you sure you want to delete current products and restore all default ShopSphere products?")) return;
         try {
             showNotification("Restoring default products... please wait", "info");
             const response = await axios.get('http://localhost:8000/api/products/reset');
@@ -268,7 +268,7 @@ const AdminPanel = () => {
         <Container>
             {/* Top Header Card */}
             <HeaderBox>
-                <Typography variant="h4" sx={{ fontWeight: 600 }}>Flipkart Admin Panel</Typography>
+                <Typography variant="h4" sx={{ fontWeight: 600 }}>ShopSphere Admin Panel</Typography>
                 <Typography variant="subtitle2" sx={{ opacity: 0.8 }}>Manage your catalog, stock quantities, and customer shipping workflows</Typography>
             </HeaderBox>
 

@@ -108,7 +108,7 @@ const AIChatbot = () => {
     const { isLoginOpen } = useContext(DataContext);
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
-        { role: 'bot', content: "Hi! 👋 I am your Flipkart AI Assistant. Ask me anything about our products, deals, or recommendations!" }
+        { role: 'bot', content: "Hi! 👋 I am your ShopSphere AI Assistant. Ask me anything about our products, deals, or recommendations!" }
     ]);
     const [input, setInput] = useState('');
     const [isTyping, setIsTyping] = useState(false);
@@ -187,7 +187,7 @@ const AIChatbot = () => {
                             </Avatar>
                             <Box>
                                 <Typography variant="subtitle2" sx={{ fontWeight: 600, lineHeight: 1.2 }}>
-                                    Flipkart AI Assistant
+                                    ShopSphere AI Assistant
                                 </Typography>
                                 <Typography variant="caption" sx={{ color: '#cce0ff', fontSize: '10px' }}>
                                     Powered by Gemini

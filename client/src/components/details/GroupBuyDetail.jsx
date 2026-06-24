@@ -112,7 +112,7 @@ const GroupBuyDetail = () => {
                 key: key,
                 amount: amount,
                 currency: currency,
-                name: 'Flipcart',
+                name: 'ShopSphere',
                 description: 'Join Group Buy Payment',
                 order_id: orderId,
                 handler: async function (paymentResponse) {

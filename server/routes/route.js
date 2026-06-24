@@ -42,7 +42,7 @@ import defaultData from '../default.js';
 router.get('/products/reset', async (req, res) => {
     try {
         await defaultData();
-        res.status(200).json({ success: true, message: "Default Flipkart products restored successfully!" });
+        res.status(200).json({ success: true, message: "Default ShopSphere products restored successfully!" });
     } catch (error) {
         console.error("Error resetting products:", error);
         res.status(500).json({ message: error.message });

@@ -201,14 +201,14 @@ const OrderHistory = () => {
             <body>
                 <div class="invoice-box">
                     <div class="header">
-                        <div class="logo">Flipkart<span>Plus</span></div>
+                        <div class="logo">ShopSphere</div>
                         <div class="title">TAX INVOICE</div>
                     </div>
                     
                     <div class="details">
                         <div class="details-col">
                             <strong>Sold By:</strong>
-                            Flipkart Clone Retail Private Limited<br>
+                            ShopSphere Retail Private Limited<br>
                             Tech Park, Outer Ring Road<br>
                             Bangalore, Karnataka, 560103
                         </div>
@@ -254,7 +254,7 @@ const OrderHistory = () => {
 
                     <div class="footer">
                         Thank you for shopping with us! This is a system-generated electronic invoice.<br>
-                        For any support, please contact support@flipkartclone.com
+                        For any support, please contact support@shopsphere.com
                     </div>
                 </div>
 

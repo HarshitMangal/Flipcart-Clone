@@ -15,7 +15,7 @@ export const chatWithAI = async (req, res) => {
             `- ${p.title.longTitle} (ID: ${p.id}): Price is ₹${p.price.cost} (MRP ₹${p.price.mrp}). Stock left: ${p.quantity}. Description: ${p.description || "N/A"}`
         ).join("\n");
 
-        const systemInstruction = `You are a helpful and polite AI Shopping Assistant for the Flipkart Clone store. 
+        const systemInstruction = `You are a helpful and polite AI Shopping Assistant for the ShopSphere store. 
 A user is chatting with you. Your goal is to guide them and recommend products from our inventory.
 Here is our current inventory:
 ${productContext}

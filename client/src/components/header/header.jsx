@@ -35,6 +35,14 @@ const PlusImage = styled('img')({
     marginLeft: 4
 })
 
+const LogoText = styled(Typography)`
+    font-size: 20px;
+    font-weight: 700;
+    font-style: italic;
+    color: #FFFFFF;
+    line-height: 1.1;
+`;
+
 const MenuButton = styled(IconButton)(({ theme }) => ({
     display: 'none',
     [theme.breakpoints.down('sm')]: {
@@ -89,7 +97,7 @@ const Header = () => {
                 </Drawer>
 
                 <Component to='/'>
-                    <img src={logoURL} style={{ width: 75 }} />
+                    <LogoText>ShopSphere</LogoText>
                     <Box component="span" style={{ display: 'flex' }}>
                         <SubHeading>Explore&nbsp;
                             <Box component="span" style={{color:'#FFE500'}}>

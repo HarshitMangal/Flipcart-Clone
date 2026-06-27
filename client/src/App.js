@@ -10,6 +10,7 @@ import DataProvider from './context/dataprovider';
 import OrderHistory from './components/orders/OrderHistory';
 import AIChatbot from './components/ai/AIChatbot';
 import AdminPanel from './components/admin/AdminPanel';
+import SupportChatWidget from './components/chat/SupportChatWidget';
 import Footer from './components/footer/Footer';
 import Wishlist from './components/wishlist/Wishlist';
 import ProfileDashboard from './components/profile/ProfileDashboard';
@@ -39,6 +40,7 @@ function App() {
       </Box>
       <Footer />
       <AIChatbot />
+      <SupportChatWidget />
     </BrowserRouter>
    </DataProvider>
   );

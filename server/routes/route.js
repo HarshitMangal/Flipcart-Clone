@@ -8,6 +8,7 @@ import { chatWithAI, translateReview } from '../controllers/ai-controller.js';
 import { getAllOrders, updateOrderStatus, addProduct, updateProduct, deleteProduct } from '../controllers/admin-controller.js';
 import { subscribeToPriceDrop, getUserNotifications, markNotificationsRead } from '../controllers/notification-controller.js';
 import { addReview, getProductReviews } from '../controllers/review-controller.js';
+import { getChatHistory, getActiveChats } from '../controllers/chat-controller.js';
 import { toggleWishlist, getWishlist } from '../controllers/wishlist-controller.js';
 import { addAddress, getAddresses, updateAddress, deleteAddress } from '../controllers/address-controller.js';
 import { validateCoupon, createCoupon } from '../controllers/coupon-controller.js';
@@ -78,6 +79,10 @@ router.get('/products/:id/reviews', getProductReviews);
 
 // Translation Route
 router.post('/translate', translateReview);
+
+// Real-Time Socket Support Chat Routes
+router.get('/chat/history/:userId', getChatHistory);
+router.get('/chat/active', getActiveChats);
 
 // Wishlist Routes
 router.post('/wishlist/toggle', toggleWishlist);

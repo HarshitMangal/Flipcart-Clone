@@ -9,6 +9,7 @@ import { Delete, Edit, Add, Refresh, ShoppingBag, LocalShipping } from '@mui/ico
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { DataContext } from '../../context/dataprovider';
+import AdminChatPanel from './AdminChatPanel';
 
 // Styled Components for Flipkart Look
 const Container = styled(Box)`
@@ -284,6 +285,7 @@ const AdminPanel = () => {
                 <Tabs value={tabIndex} onChange={(e, index) => setTabIndex(index)} textColor="primary" indicatorColor="primary">
                     <Tab label="📦 Manage Products" sx={{ textTransform: 'none', fontWeight: 600 }} />
                     <Tab label="🚚 Manage Orders" sx={{ textTransform: 'none', fontWeight: 600 }} />
+                    <Tab label="💬 Support Chats" sx={{ textTransform: 'none', fontWeight: 600 }} />
                 </Tabs>
             </Box>
 
@@ -467,6 +469,11 @@ const AdminPanel = () => {
                         </Grid>
                     )}
                 </Box>
+            )}
+
+            {/* 3. SUPPORT CHATS TAB */}
+            {tabIndex === 2 && (
+                <AdminChatPanel />
             )}
 
             {/* A. DIALOG: ADD PRODUCT */}

@@ -107,7 +107,7 @@ const SupportChatWidget = () => {
     }
 
     return (
-        <Box sx={{ position: "fixed", bottom: 20, right: 20, zIndex: 1000 }}>
+        <Box sx={{ position: "fixed", bottom: 20, right: 95, zIndex: 1000 }}>
             {/* Floating Action Button */}
             {!isOpen && (
                 <Badge badgeContent={unreadCount} color="error" overlap="circular">

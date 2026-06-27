@@ -33,7 +33,8 @@ const SupportChatWidget = () => {
         if (!account) return;
 
         // Connect to backend Socket.io
-        socketRef.current = io("http://localhost:8000");
+        const backendUrl = process.env.REACT_APP_API_URL || "http://localhost:8000";
+        socketRef.current = io(backendUrl);
 
         // Join user's personal chat room (identified by username)
         socketRef.current.emit("join-room", { userId: account });

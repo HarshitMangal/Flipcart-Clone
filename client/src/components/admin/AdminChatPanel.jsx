@@ -30,7 +30,8 @@ const AdminChatPanel = () => {
 
     // Initialize socket connection and load active threads
     useEffect(() => {
-        socketRef.current = io("http://localhost:8000");
+        const backendUrl = process.env.REACT_APP_API_URL || "http://localhost:8000";
+        socketRef.current = io(backendUrl);
 
         const fetchActiveChats = async () => {
             try {

@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const DataContext = createContext(null);
 
@@ -24,6 +24,64 @@ const DataProvider = ({ children }) => {
     const [account, setAccount] = useState(validAccount);
     const [role, setRole] = useState(validRole);
     const [isLoginOpen, setIsLoginOpen] = useState(false);
+    const [localeInfo, setLocaleInfo] = useState({
+        country: 'IN',
+        currency: 'INR',
+        symbol: '₹',
+        conversionRate: 1.0
+    });
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const testCountry = urlParams.get('country');
+
+        if (testCountry) {
+            if (testCountry.toUpperCase() === 'IN') {
+                setLocaleInfo({
+                    country: 'IN',
+                    currency: 'INR',
+                    symbol: '₹',
+                    conversionRate: 1.0
+                });
+            } else {
+                setLocaleInfo({
+                    country: testCountry.toUpperCase(),
+                    currency: 'USD',
+                    symbol: '$',
+                    conversionRate: 1 / 85
+                });
+            }
+            return;
+        }
+
+        const detectLocation = async () => {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                if (data && data.country_code) {
+                    const country = data.country_code.toUpperCase();
+                    if (country === 'IN') {
+                        setLocaleInfo({
+                            country: 'IN',
+                            currency: 'INR',
+                            symbol: '₹',
+                            conversionRate: 1.0
+                        });
+                    } else {
+                        setLocaleInfo({
+                            country: country,
+                            currency: 'USD',
+                            symbol: '$',
+                            conversionRate: 1 / 85
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error("Error detecting geolocation:", error);
+            }
+        };
+        detectLocation();
+    }, []);
 
     const setAccountState = (name) => {
         if (!name || name === 'undefined' || name === 'null') {
@@ -48,6 +106,16 @@ const DataProvider = ({ children }) => {
         localStorage.setItem('role', newRole);
     };
 
+    const formatPrice = (price) => {
+        if (!price && price !== 0) return '';
+        const converted = price * localeInfo.conversionRate;
+        return new Intl.NumberFormat(localeInfo.country === 'IN' ? 'en-IN' : 'en-US', {
+            style: 'currency',
+            currency: localeInfo.currency,
+            maximumFractionDigits: localeInfo.country === 'IN' ? 0 : 2
+        }).format(converted);
+    };
+
     return (
         <DataContext.Provider
             value={{
@@ -56,7 +124,10 @@ const DataProvider = ({ children }) => {
                 role,
                 setRole: setRoleState,
                 isLoginOpen,
-                setIsLoginOpen
+                setIsLoginOpen,
+                localeInfo,
+                setLocaleInfo,
+                formatPrice
             }}
         >
             {children}

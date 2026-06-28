@@ -1,8 +1,10 @@
 
+import { useContext } from 'react';
 import { Card, Box, Typography, Button, styled } from '@mui/material';
 
 import { addEllipsis } from '../../utils/util';
 import GroupButton from './GroupButton';
+import { DataContext } from '../../context/dataprovider';
 
 const Component = styled(Card)(({ theme }) => ({
     borderTop: '1px solid #f0f0f0',
@@ -56,6 +58,7 @@ const Remove = styled(Button)`
 
 const CartItem = ({ item, removeItemFromCart }) => {
     const fassured = 'https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/fa_62673a.png';
+    const { formatPrice } = useContext(DataContext);
 
     return (
         <Component>
@@ -69,8 +72,8 @@ const CartItem = ({ item, removeItemFromCart }) => {
                     <span><img src={fassured} style={{ width: 50, marginLeft: 10 }} /></span>
                 </SmallText>
                 <Typography style={{margin: '20px 0'}}>
-                    <Cost component="span">₹{item.price.cost}</Cost>&nbsp;&nbsp;&nbsp;
-                    <MRP component="span"><strike>₹{item.price.mrp}</strike></MRP>&nbsp;&nbsp;&nbsp;
+                    <Cost component="span">{formatPrice(item.price.cost)}</Cost>&nbsp;&nbsp;&nbsp;
+                    <MRP component="span"><strike>{formatPrice(item.price.mrp)}</strike></MRP>&nbsp;&nbsp;&nbsp;
                     <Discount component="span">{item.price.discount} off</Discount>
                 </Typography>
                 <Remove onClick={() => removeItemFromCart(item.id)}>REMOVE</Remove>

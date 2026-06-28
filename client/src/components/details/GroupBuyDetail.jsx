@@ -68,7 +68,7 @@ const MemberRow = styled(Box)`
 const GroupBuyDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { account } = useContext(DataContext);
+    const { account, formatPrice } = useContext(DataContext);
     const [groupData, setGroupData] = useState(null);
     const [productData, setProductData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -217,8 +217,8 @@ const GroupBuyDetail = () => {
                 <Box>
                     <Typography style={{ fontWeight: 600, fontSize: 16 }}>{productData.title?.longTitle}</Typography>
                     <Typography style={{ marginTop: 8 }}>
-                        <span style={{ fontSize: 20, fontWeight: 600 }}>₹{Math.round(productData.price?.cost * 0.85)}</span>
-                        <span style={{ color: '#878787', textDecoration: 'line-through', marginLeft: 10 }}>₹{productData.price?.cost}</span>
+                        <span style={{ fontSize: 20, fontWeight: 600 }}>{formatPrice(Math.round(productData.price?.cost * 0.85))}</span>
+                        <span style={{ color: '#878787', textDecoration: 'line-through', marginLeft: 10 }}>{formatPrice(productData.price?.cost)}</span>
                         <span style={{ color: '#388e3c', fontWeight: 600, marginLeft: 10 }}>(15% Group Buy Discount!)</span>
                     </Typography>
                 </Box>
@@ -276,7 +276,7 @@ const GroupBuyDetail = () => {
                         style={{ background: '#24c35e', color: '#fff', textTransform: 'none', height: 48, fontWeight: 'bold' }}
                         onClick={joinGroupBuyPayment}
                     >
-                        Join this Group & Pay ₹{Math.round(productData.price?.cost * 0.85)}
+                        Join this Group & Pay {formatPrice(Math.round(productData.price?.cost * 0.85))}
                     </Button>
                 )}
                 

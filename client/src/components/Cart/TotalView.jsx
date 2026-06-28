@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-
+import { useState, useEffect, useContext } from 'react';
 import { Box, Typography, styled } from '@mui/material';
+import { DataContext } from '../../context/dataprovider';
 
 const Header = styled(Box)`
     padding: 15px 24px;
@@ -38,14 +38,10 @@ const Discount = styled(Typography)`
     color: green;
 `
 
-// component: {
-//     // width: '30%'
-// },
-
-
 const TotalView = ({ cartItems }) => {
     const [price, setPrice] = useState(0);
-    const [discount, setDiscount] = useState(0)
+    const [discount, setDiscount] = useState(0);
+    const { formatPrice, localeInfo } = useContext(DataContext);
 
     useEffect(() => {
         totalAmount();
@@ -61,25 +57,28 @@ const TotalView = ({ cartItems }) => {
         setDiscount(discount);
     }
 
+    const deliveryChargeINR = localeInfo.country === 'IN' ? 40 : 425;
+    const totalINR = price - discount + deliveryChargeINR;
+
     return (
-        <Box>  {/* className={classes.component}> */}
+        <Box>
             <Header>
                 <Heading>PRICE DETAILS</Heading>
             </Header>
             <Container>
                 <Typography>Price ({cartItems?.length} item)
-                    <Price component="span">₹{price}</Price>
+                    <Price component="span">{formatPrice(price)}</Price>
                 </Typography>
                 <Typography>Discount
-                    <Price component="span">-₹{discount}</Price>
+                    <Price component="span">-{formatPrice(discount)}</Price>
                 </Typography>
                 <Typography>Delivery Charges
-                    <Price component="span">₹40</Price>
+                    <Price component="span">{formatPrice(deliveryChargeINR)}</Price>
                 </Typography>
                 <TotalAmount>Total Amount
-                    <Price>₹{price - discount + 40}</Price>
+                    <Price>{formatPrice(totalINR)}</Price>
                 </TotalAmount>
-                <Discount>You will save ₹{discount - 40} on this order</Discount>
+                <Discount>You will save {formatPrice(discount - deliveryChargeINR)} on this order</Discount>
             </Container>
         </Box>
     )

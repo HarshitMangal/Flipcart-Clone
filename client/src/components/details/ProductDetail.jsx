@@ -29,7 +29,7 @@ const ColumnText = styled(TableRow)`
     }`;
 
 const ProductDetail = ({ product, reviews, averageRating, refetchReviews }) => {
-    const { account } = useContext(DataContext);
+    const { account, formatPrice } = useContext(DataContext);
     const navigate = useNavigate();
 
     const [userRating, setUserRating] = useState(5);
@@ -257,13 +257,13 @@ const ProductDetail = ({ product, reviews, averageRating, refetchReviews }) => {
 
             <Typography>
                 <span style={{ fontSize: 28 }}>
-                    ₹{product.price?.cost}
+                    {formatPrice(product.price?.cost)}
                 </span>
 
                 &nbsp;&nbsp;&nbsp;
 
                 <span style={{ color: '#878787' }}>
-                    <strike>₹{product.price?.mrp}</strike>
+                    <strike>{formatPrice(product.price?.mrp)}</strike>
                 </span>
 
                 &nbsp;&nbsp;&nbsp;
@@ -323,7 +323,7 @@ const ProductDetail = ({ product, reviews, averageRating, refetchReviews }) => {
                                 style={{ background: '#24c35e', color: '#fff', textTransform: 'none', fontWeight: 600 }}
                                 onClick={() => joinGroupBuyPayment(group._id)}
                             >
-                                Join Group (₹{Math.round(product.price?.cost * 0.85)})
+                                Join Group ({formatPrice(Math.round(product.price?.cost * 0.85))})
                             </Button>
                         </Box>
                     ))}

@@ -68,7 +68,7 @@ const MemberRow = styled(Box)`
 const GroupBuyDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { account, formatPrice } = useContext(DataContext);
+    const { account, formatPrice, localeInfo } = useContext(DataContext);
     const [groupData, setGroupData] = useState(null);
     const [productData, setProductData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -95,6 +95,11 @@ const GroupBuyDetail = () => {
     const joinGroupBuyPayment = async () => {
         if (!account) {
             alert('Please login to join the group buy!');
+            return;
+        }
+
+        if (localeInfo.country !== 'IN') {
+            alert('Group Buying is currently only available for domestic orders (INR). For international shipping, please purchase the product individually.');
             return;
         }
 

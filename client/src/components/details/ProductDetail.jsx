@@ -29,7 +29,7 @@ const ColumnText = styled(TableRow)`
     }`;
 
 const ProductDetail = ({ product, reviews, averageRating, refetchReviews }) => {
-    const { account, formatPrice } = useContext(DataContext);
+    const { account, formatPrice, localeInfo } = useContext(DataContext);
     const navigate = useNavigate();
 
     const [userRating, setUserRating] = useState(5);
@@ -55,6 +55,11 @@ const ProductDetail = ({ product, reviews, averageRating, refetchReviews }) => {
     const joinGroupBuyPayment = async (groupId) => {
         if (!account) {
             alert('Please login to join the group buy!');
+            return;
+        }
+
+        if (localeInfo.country !== 'IN') {
+            alert('Group Buying is currently only available for domestic orders (INR). For international shipping, please purchase the product individually.');
             return;
         }
 

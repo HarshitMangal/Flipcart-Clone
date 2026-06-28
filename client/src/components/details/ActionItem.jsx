@@ -47,7 +47,7 @@ const ActionItem=({ product})=>{
      const dispatch = useDispatch();
      const [quantity, setQuantity] = useState(1);
      const { id } = product;
-     const { account } = useContext(DataContext);
+     const { account, localeInfo } = useContext(DataContext);
 
      const addItemToCart = () => {
          dispatch(addToCart(id, quantity));
@@ -57,6 +57,13 @@ const ActionItem=({ product})=>{
      const buyNow = async (isGroupBuy = false, groupId = null) => {
          if (!account) {
              alert('Please login to buy items!');
+             return;
+         }
+
+         // International redirect to cart for checkout routing
+         if (localeInfo.country !== 'IN') {
+             dispatch(addToCart(id, 1));
+             navigate('/cart');
              return;
          }
 

@@ -37,19 +37,99 @@ Welcome to the **Flipkart Clone**, a premium, full-featured, and modern e-commer
 
 ---
 
-## 📐 System Architecture
+## 📐 Backend System Architecture & Data Pipelines
 
-Below is the high-level architecture diagram detailing the client-server interaction:
+The system is engineered as a decoupled MERN architecture with high-concurrency real-time layers, memory-caching gateways, and cryptographic transaction boundaries.
 
+### 1. High-Level Architecture Flowchart
 ```mermaid
-graph TD
-    Client[React Frontend] -->|API Requests & WebSockets| Server[NodeJS / Express Backend]
-    Client -->|Local State| Redux[Redux Cart/Products]
-    Server -->|Real-Time Duplex| Sockets[Socket.io WebSockets]
-    Server -->|Read/Write Cache| Redis[(Redis Cache)]
-    Server -->|Queries & Updates| DB[(MongoDB database)]
-    Admin[Admin Panel] -->|Support Chat / CRUD| Server
+graph TB
+    subgraph Client Tier [Client Tier - React SPA]
+        UI[Material UI Frontend]
+        State[Redux State Manager]
+        WS_Client[Socket.io WebSockets Client]
+    end
+
+    subgraph API Gateway / Server Tier [Server Tier - Node.js & Express]
+        API[Express Router API Gateway]
+        SocketServer[Socket.io Duplex WebSockets Server]
+        Gemini[Google Gemini 2.5 Flash Agent]
+        Razorpay[Razorpay Cryptographic Node SDK]
+    end
+
+    subgraph Storage & Performance [Data Infrastructure Tier]
+        RedisDb[(Redis Memory Cache)]
+        MongoDb[(MongoDB Database)]
+    end
+
+    %% Client Interactions
+    UI -->|HTTP Requests| API
+    UI -->|Sync State| State
+    WS_Client <-->|WebSockets Duplex protocol| SocketServer
+
+    %% Server Logic
+    API -->|Read/Write Caching| RedisDb
+    API -->|Database Queries| MongoDb
+    API -->|Prompt & Context Seeding| Gemini
+    API -->|Order Verification| Razorpay
+    
+    %% Socket IO
+    SocketServer -->|Log Chat History| MongoDb
 ```
+
+### 2. Transactional Checkout & IP Geolocation Routing Pipeline
+Below is the sequence diagram illustrating how the backend dynamically converts currency and routes payment transactions:
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Visitor / Client Browser
+    participant API as Geolocation API (ipapi)
+    participant Server as Express Payment Backend
+    participant DB as MongoDB Atlas
+    participant Gateway as Razorpay / Card Gateway
+
+    User->>API: Query Client IP Metadata
+    API-->>User: Return metadata (Country Code: e.g. "US" vs "IN")
+    alt International Country (Non-IN)
+        User->>User: Set currency to USD ($), exchange rate to 1/85
+        User->>Server: Click "Place Order" (Params: Cart, Gateway: 'PayPal')
+        Server->>Server: Validate inventory and stock levels in DB
+        Server->>DB: Save Order schema directly with MOCK_PAYPAL receipt ID
+        Server-->>User: Return Order Created (Status: Paid)
+    else Domestic Country (IN)
+        User->>User: Set currency to INR (₹)
+        User->>Server: Initialize checkout payment (Params: Cart Amount)
+        Server->>Gateway: Create Razorpay Order instance (Amount in INR)
+        Gateway-->>Server: Return Order ID (rzp_order_x)
+        Server-->>User: Pass Order credentials & Public Key
+        User->>User: Render Razorpay Checkout Overlay & complete payment
+        User->>Server: Send payment receipt (Signature, Order ID, Payment ID)
+        Server->>Server: Perform SHA-256 HMAC cryptographic check
+        alt Signature Verified
+            Server->>DB: Save Order schema (Status: Ordered)
+            Server-->>User: Return Payment Success Confirmation
+        else Verification Failed
+            Server-->>User: Return HTTP 400 (Unauthorized Transaction)
+        end
+    end
+```
+
+---
+
+## 🧠 Deep-Dive Backend Architecture Specifications
+
+### 1. Duplex WebSockets (Socket.io Support System)
+* **Isolated Room Management**: To prevent message leaks, sockets are dynamically grouped into isolated room IDs using the schema `${userId}`. The admin enters the same room to communicate directly with the customer.
+* **Persistent History**: Every duplex frame sent is logged permanently into MongoDB. 
+* **Dynamic Sorting Aggregation**: The admin panel uses Mongoose aggregation queries to sort active chat threads. It counts unread frames and groups sessions by client ID dynamically, ordering the queue by the latest timestamp.
+
+### 2. Distributed Caching (Redis Database Cache)
+* **Read-Through Architecture**: Catalog queries first check the Redis memory layer. If there is a cache hit, the JSON response is returned directly in under 2ms. If there is a cache miss, the server queries MongoDB, caches the result with a 1-hour TTL, and returns the response.
+* **Active Cache Invalidation**: Adding, updating, or deleting products by admin triggers cache invalidation. It deletes the specific product cache (`product:id`) and clears the catalog queries indexes (`products:query:*`) to prevent stale reads.
+* **Fail-Safe Mechanism**: The Redis connection is wrapped in a fail-safe fallback middleware. If the Redis server crashes or is unavailable, the application logs a warning and automatically routes all traffic to MongoDB without interrupting the service.
+
+### 3. Cryptographic Checkout (HMAC SHA-256 Signature Verification)
+* During domestic transactions, the backend validates Razorpay signatures. It creates a cryptographic SHA-256 HMAC hash using the transaction parameters (`razorpay_order_id + "|" + razorpay_payment_id`) and the server's private key. If the hash matches the signature sent by the client, the order is finalized. This prevents client-side manipulation of transaction status or order amounts.
 
 ---
 

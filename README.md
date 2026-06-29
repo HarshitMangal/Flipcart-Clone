@@ -15,10 +15,11 @@ Welcome to the **Flipkart Clone**, a premium, full-featured, and modern e-commer
 * **Fully Responsive**: Optimized for desktop, tablet, and mobile views.
 
 ### 2. Advanced Integrations
-* **💳 Razorpay Payment Gateway**: Features a backend-authenticated Razorpay API flow verifying checkout payments securely.
-* **🤖 Gemini AI Chatbot Assistant**: A floating interactive shopping assistant powered by Google Gemini (using the `@google/generative-ai` SDK). It feeds on the store's current MongoDB inventory to provide real-time suggestions and alternatives for out-of-stock items. Fallback offline mockup mode is active if no API key is configured.
-* **👥 Group Buying (Team Buy) System**: Buy products at a 15% discount by starting or joining group buy teams! Integrates with Razorpay payments and checks order completeness status dynamically.
-* **📄 Print-ready Tax Invoices**: Generates a professional tax invoice directly from the client-side *My Orders* page using native print layouts, easily exportable as PDF.
+* **💳 Localized Payments & Geolocation**: Features an **IP Geolocation-based country detection system** (via `ipapi.co`). Automatically formats all catalog prices dynamically in `₹` (INR) or `$` (USD) using `Intl.NumberFormat` at a stable exchange rate. Restructures checkout flows: domestic users checkout via **Razorpay Payments API** (secured by backend SHA-256 HMAC verification), whereas international users checkout via a custom **PayPal/Credit Card dialog checkout**.
+* **💬 Real-Time Admin Support Chat**: Built a duplex communication channel using **Socket.io** to connect customers with the support desk. Includes room-based message isolation, message log persistence in MongoDB, and an admin workspace dashboard using Mongoose aggregation pipelines to sort active support threads dynamically.
+* **🤖 Gemini AI Chatbot Assistant**: A stateful floating shopping assistant powered by Google Gemini 2.5 Flash. Utilizes LangChain context windowing to feed store inventory and answer user product catalog queries with real-time suggestions.
+* **👥 Group Buying (Team Buy) System**: Social group booking system enabling 15% team discounts, checking team completions dynamically to trigger Razorpay checkout authorizations.
+* **📄 Print-ready Tax Invoices**: Generates professional PDF-ready tax invoices directly from the client-side *My Orders* dashboard.
 
 ### 3. Performance & Caching (Backend)
 * **⚡ Redis Database Caching**: Integrates a high-performance Redis cache layer. Product search queries and product details fetches are cached (TTL: 1 hour), reducing read latencies to <2ms.
@@ -31,7 +32,7 @@ Welcome to the **Flipkart Clone**, a premium, full-featured, and modern e-commer
 * **👤 Profile & Address Manager (`/profile`)**: Manage user profile information and save multiple shipping addresses (Home/Work) with default selections.
 * **❤️ Saved Wishlist (`/wishlist`)**: Save and manage products to purchase later, with single-click additions directly from product pages.
 * **🛠️ Admin Dashboard (`/admin`)**:
-  - **Inventory CRUD**: Add new items, update stock count, delete products, or import seed data from external APIs (DummyJSON API integration).
+  - **Inventory CRUD**: Add new items, update stock count, delete products, or import seed data from external APIs.
   - **Order Shipping Workflow**: Track all customer orders and update shipping statuses (`Ordered` ➡️ `Shipped` ➡️ `Out for Delivery` ➡️ `Delivered`). Modifying the status dynamically updates the customer's delivery progress bar!
 
 ---
@@ -42,19 +43,20 @@ Below is the high-level architecture diagram detailing the client-server interac
 
 ```mermaid
 graph TD
-    Client[React Frontend] -->|API Requests| Server[NodeJS / Express Backend]
+    Client[React Frontend] -->|API Requests & WebSockets| Server[NodeJS / Express Backend]
     Client -->|Local State| Redux[Redux Cart/Products]
+    Server -->|Real-Time Duplex| Sockets[Socket.io WebSockets]
     Server -->|Read/Write Cache| Redis[(Redis Cache)]
     Server -->|Queries & Updates| DB[(MongoDB database)]
-    Admin[Admin Panel] -->|Update Order Status / Catalog| Server
+    Admin[Admin Panel] -->|Support Chat / CRUD| Server
 ```
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Frontend**: React (v19), React Router (v7), Redux Toolkit, Material-UI (MUI v7), Axios.
-* **Backend**: Node.js, Express.js, Mongoose.
+* **Frontend**: React (v19), React Router (v7), Redux Toolkit, Material-UI (MUI v7), Axios, Socket.io-client.
+* **Backend**: Node.js, Express.js, Mongoose, Socket.io.
 * **Database & Caching**: MongoDB (Local or Atlas Cloud), Redis (Cache Client).
 * **AI Integration**: Google Generative AI (`gemini-2.5-flash`).
 * **Payments**: Razorpay Node SDK.

@@ -25,12 +25,12 @@ const Text = styled(Typography)`
     font-weight: 600;
     font-family: inherit;
 `;
-const NavBar = () => {
+const NavBar = ({ onCategorySelect }) => {
     return (
         <Components>
             {
                 navData.map(data => (
-                    <Container>
+                    <Container onClick={() => onCategorySelect && onCategorySelect(data.text)} style={{ cursor: 'pointer' }}>
                         <img src={data.url} alt="nav" style={{width:64}}/>
                         <Text>{data.text}</Text>
                     </Container>

@@ -19,7 +19,7 @@ const Container = styled(Link)(({ theme }) => ({
     color: '#fff',
     alignItems: 'center',
     gap: '8px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
         color: '#2874f0'
     }
 }));
@@ -29,7 +29,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     gap: '40px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
         flexDirection: 'column',
         alignItems: 'flex-start',
         gap: '20px',
@@ -46,7 +46,7 @@ const LoginButton = styled(Button)(({ theme }) => ({
   borderRadius: '2px',
   padding: '5px 25px',
   height: '32px',
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down('md')]: {
       background: '#2874f0',
       color: '#fff'
   }
@@ -56,7 +56,7 @@ const NotificationButton = styled(IconButton)(({ theme }) => ({
     color: '#fff',
     padding: '6px',
     cursor: 'pointer',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
         color: '#2874f0'
     }
 }));

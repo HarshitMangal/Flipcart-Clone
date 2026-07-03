@@ -120,6 +120,11 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
     const [ otpSent, setOtpSent ] = useState(false);
     const [ otp, setOtp ] = useState('');
 
+    // Signup OTP states
+    const [ signupOtpSent, setSignupOtpSent ] = useState(false);
+    const [ signupOtp, setSignupOtp ] = useState('');
+    const [ isSignupEmailVerified, setIsSignupEmailVerified ] = useState(false);
+
     useEffect(() => {
         showError(false);
     }, [login])
@@ -183,7 +188,36 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
         }
     }
 
+    const requestSignupOtp = async () => {
+        if(!signup.email) {
+            alert('Please enter your email to receive OTP');
+            return;
+        }
+        const res = await sendOtpAPI({ email: signup.email, isSignup: true });
+        if(res && res.status === 200) {
+            setSignupOtpSent(true);
+            alert('OTP sent to your signup email');
+        } else {
+            alert(res?.data?.message || 'Error sending OTP');
+        }
+    }
+    
+    const verifySignupOtp = async () => {
+        const res = await verifyOtpAPI({ email: signup.email, otp: signupOtp, isSignup: true });
+        if(res && res.status === 200) {
+            setIsSignupEmailVerified(true);
+            setSignupOtpSent(false);
+            alert('Email OTP Verified! You can now proceed to Sign Up.');
+        } else {
+            alert('Invalid OTP');
+        }
+    }
+
     const signupUser = async() => {
+        if (!isSignupEmailVerified) {
+            alert("Please verify your email via OTP first!");
+            return;
+        }
         let response = await authenticateSignup(signup);
         if(!response) return;
         handleClose();
@@ -240,6 +274,22 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='lastname' label='Enter Lastname' />
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='username' label='Enter Username' />
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='email' label='Enter Email' />
+                            
+                            { !isSignupEmailVerified && (
+                                !signupOtpSent ? 
+                                    <RequestOTP onClick={() => requestSignupOtp()}>Request Email OTP</RequestOTP>
+                                : 
+                                    <Box style={{display:'flex', flexDirection:'column', gap: '10px', marginTop: '10px'}}>
+                                        <TextField variant="standard" onChange={(e) => setSignupOtp(e.target.value)} label='Enter Signup OTP' />
+                                        <Button variant="contained" style={{background: '#2874f0'}} onClick={() => verifySignupOtp()}>Verify Signup OTP</Button>
+                                    </Box>
+                            )}
+                            { isSignupEmailVerified && (
+                                <Typography style={{ color: 'green', fontSize: '12px', fontWeight: 600, marginTop: '10px' }}>
+                                    ✓ Email Verified Successfully
+                                </Typography>
+                            )}
+
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='password' label='Enter Password' />
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='phone' label='Enter Phone' />
                             <LoginButton onClick={() => signupUser()} >Continue</LoginButton>

@@ -8,11 +8,20 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const JWT_SECRET = process.env.JWT_SECRET || "shopsphere_jwt_secret";
 
+// Temporary memory storage for signup OTPs and verified sessions
+const signupOtps = new Map();
+
 export const userSignup = async (req, res) => {
     try {
         console.log("req.body =", req.body);
 
         const { username, email, password } = req.body;
+
+        // Force validation: Check if email has been verified via OTP
+        const verifiedRecord = signupOtps.get(email);
+        if (!verifiedRecord || !verifiedRecord.verified) {
+            return res.status(400).json({ message: "Email verification is required before signing up!" });
+        }
 
         const existUsername = await User.findOne({ username });
         if (existUsername) {
@@ -24,13 +33,17 @@ export const userSignup = async (req, res) => {
             return res.status(400).json({ message: "User already exists with this email" });
         }
 
+        // Remove the temporary validation token
+        signupOtps.delete(email);
+
         // Salt and hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = new User({
             ...req.body,
             password: hashedPassword,
-            role: username.toLowerCase() === 'admin' ? 'admin' : 'user'
+            role: username.toLowerCase() === 'admin' ? 'admin' : 'user',
+            isVerified: true
         });
         await newUser.save();
 
@@ -57,7 +70,29 @@ export const userSignup = async (req, res) => {
 
 export const sendOtp = async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email, isSignup } = req.body;
+
+        if (isSignup) {
+            const existUser = await User.findOne({ email });
+            if (existUser) {
+                return res.status(400).json({ message: "User already exists with this email" });
+            }
+
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            signupOtps.set(email, {
+                otp,
+                expires: new Date(Date.now() + 10 * 60000), // 10 minutes
+                verified: false
+            });
+
+            const isSent = await sendOTP(email, otp);
+            if (isSent) {
+                return res.status(200).json({ message: "OTP sent successfully" });
+            } else {
+                return res.status(500).json({ message: "Failed to send OTP" });
+            }
+        }
+
         const user = await User.findOne({ email });
         if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -79,7 +114,22 @@ export const sendOtp = async (req, res) => {
 
 export const verifyOtp = async (req, res) => {
     try {
-        const { email, otp } = req.body;
+        const { email, otp, isSignup } = req.body;
+
+        if (isSignup) {
+            const record = signupOtps.get(email);
+            if (!record) return res.status(400).json({ message: "No OTP requested for this email" });
+            if (record.otp !== otp) return res.status(400).json({ message: "Invalid OTP" });
+            if (new Date() > new Date(record.expires)) return res.status(400).json({ message: "OTP expired" });
+
+            // Mark email as verified for next 15 minutes
+            signupOtps.set(email, {
+                verified: true,
+                expires: new Date(Date.now() + 15 * 60000)
+            });
+            return res.status(200).json({ message: "Email verified successfully" });
+        }
+
         const user = await User.findOne({ email });
         
         if (!user) return res.status(404).json({ message: "User not found" });

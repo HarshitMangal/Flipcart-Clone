@@ -27,26 +27,45 @@ const Home = () => {
    dispatch(getProducts());
  }, [dispatch]);
 
- // Slice the products array dynamically so each row shows different items
- const dealOfTheDay = products ? products.slice(0, 8) : [];
- const bestSellers = products ? (products.length > 8 ? products.slice(8, 16) : products) : [];
- const newArrivals = products ? (products.length > 16 ? products.slice(16, 24) : products) : [];
- const topPicks = products ? (products.length > 24 ? products.slice(24, 32) : products) : [];
- const limitedOffer = products ? (products.length > 12 ? products.slice(12, 20) : products) : [];
- const customerFavorites = products ? (products.length > 18 ? products.slice(18, 26) : products) : [];
+ // Dynamic feed helper: divides products if catalog is large (30 items), or shifts them if catalog is small (7 items)
+ const getProductFeed = (items, type) => {
+   if (!items || items.length === 0) return [];
+   
+   if (items.length >= 24) {
+     switch (type) {
+       case 'deal': return items.slice(0, 8);
+       case 'best': return items.slice(8, 16);
+       case 'new': return items.slice(16, 24);
+       case 'top': return items.slice(24, 32);
+       case 'limited': return items.slice(12, 20);
+       case 'favs': return items.slice(4, 12);
+       default: return items;
+     }
+   } else {
+     switch (type) {
+       case 'deal': return items;
+       case 'best': return [...items].reverse();
+       case 'new': return items.slice(2).concat(items.slice(0, 2));
+       case 'top': return items.slice(4).concat(items.slice(0, 4));
+       case 'limited': return items.slice(1).concat(items.slice(0, 1));
+       case 'favs': return items.slice(3).concat(items.slice(0, 3));
+       default: return items;
+     }
+   }
+ };
 
  return (
    <>
      <NavBar />
      <Component>
        <Banner />
-       <Midslide products={dealOfTheDay} title="Deal of the Day" timer={true} />
+       <Midslide products={getProductFeed(products, 'deal')} title="Deal of the Day" timer={true} />
        <MidSection/>
-       <Slide products={bestSellers} title="Best Sellers"  timer={false}/>
-       <Slide products={newArrivals} title="New Arrivals" timer={false} />
-       <Slide products={topPicks} title="Top Picks" timer={false} />
-       <Slide products={limitedOffer} title="Limited Time Offer" timer={false} />
-       <Slide products={customerFavorites} title="Customer Favorites" timer={false} />
+       <Slide products={getProductFeed(products, 'best')} title="Best Sellers"  timer={false}/>
+       <Slide products={getProductFeed(products, 'new')} title="New Arrivals" timer={false} />
+       <Slide products={getProductFeed(products, 'top')} title="Top Picks" timer={false} />
+       <Slide products={getProductFeed(products, 'limited')} title="Limited Time Offer" timer={false} />
+       <Slide products={getProductFeed(products, 'favs')} title="Customer Favorites" timer={false} />
      </Component>
    </>
  );

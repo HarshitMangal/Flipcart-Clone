@@ -21,12 +21,12 @@ const Container = styled(Grid)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'row',
     padding: '20px 50px',
-    margin: '0 130px',
+    margin: '0 60px',
     width: 'auto',
     borderTop: '3px solid #2874f0',
     boxShadow: '0 1px 3px 0 rgba(0,0,0,.1)',
     [theme.breakpoints.down('lg')]: {
-        margin: '0 30px'
+        margin: '0 20px'
     },
     [theme.breakpoints.down('md')]: {
         margin: 0,

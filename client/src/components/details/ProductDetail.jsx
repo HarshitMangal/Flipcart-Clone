@@ -355,10 +355,10 @@ const ProductDetail = ({ product, reviews, averageRating, refetchReviews }) => {
                 </Typography>
             </SmallText>
 
-             <Table>
+             <Table style={{ width: '100%', tableLayout: 'fixed' }}>
                 <TableBody>
                     <ColumnText>
-                        <TableCell style={{ color: '#878787' }}>Delivery</TableCell>
+                        <TableCell style={{ color: '#878787', width: '25%' }}>Delivery</TableCell>
                         <TableCell style={{ fontWeight: 600 }}>Delivery by {date.toDateString()} | ₹40</TableCell>
                     </ColumnText>
                     <ColumnText>
@@ -369,18 +369,18 @@ const ProductDetail = ({ product, reviews, averageRating, refetchReviews }) => {
                         <TableCell style={{ color: '#878787' }}>Seller</TableCell>
                         <TableCell>
                             <span style={{ color: '#2874f0' }}>SuperComNet</span>
-                            <Typography>GST invoice available</Typography>
-                            <Typography>View more sellers starting from ₹329</Typography>
+                            <Typography style={{ fontSize: 14 }}>GST invoice available</Typography>
+                            <Typography style={{ fontSize: 14 }}>View more sellers starting from ₹329</Typography>
                         </TableCell>
                     </ColumnText>
                     <TableRow>
-                        <TableCell colSpan={2}>
-                            <img src={adURL} style={{ width: 390 }} />
+                        <TableCell colSpan={2} style={{ padding: '10px 0' }}>
+                            <img src={adURL} style={{ maxWidth: '100%', height: 'auto', display: 'block' }} alt="SuperCoin offer banner" />
                         </TableCell>
                     </TableRow>
                     <ColumnText>
                         <TableCell style={{ color: '#878787' }}>Description</TableCell>
-                        <TableCell>{product.description}</TableCell>
+                        <TableCell style={{ wordBreak: 'break-word', lineHeight: '1.6' }}>{product.description}</TableCell>
                     </ColumnText>
                 </TableBody>
             </Table>

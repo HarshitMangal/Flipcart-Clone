@@ -18,6 +18,8 @@ const Component = styled(Box)`
 
 const Container = styled(Grid)(({ theme }) => ({
     background: '#FFFFFF',
+    display: 'flex',
+    flexDirection: 'row',
     padding: '20px 50px',
     margin: '0 130px',
     width: 'auto',
@@ -28,7 +30,8 @@ const Container = styled(Grid)(({ theme }) => ({
     },
     [theme.breakpoints.down('md')]: {
         margin: 0,
-        padding: '10px 15px'
+        padding: '10px 15px',
+        flexDirection: 'column'
     }
 }))
 
@@ -86,11 +89,11 @@ const DetailView = () => {
                 product && Object.keys(product).length > 0 &&
                 < Container  container>
 
-                    <Grid item lg={4} md={4} sm={8} xs={12}>
+                    <Grid item lg={5} md={5} sm={12} xs={12}>
                         <ActionItem product={product} />
                     </Grid>
 
-                    <RightContainer item lg={8} md={8} sm={8} xs={12}>
+                    <RightContainer item lg={7} md={7} sm={12} xs={12}>
                         <ProductDetail 
                             product={product} 
                             reviews={reviews}

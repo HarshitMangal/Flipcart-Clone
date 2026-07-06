@@ -19,18 +19,27 @@ const Component = styled(Box)`
 const Container = styled(Grid)(({ theme }) => ({
     background: '#FFFFFF',
     display: 'flex',
+    padding: '20px 50px',
+    margin: '0 50px',
+    width: 'auto',
     [theme.breakpoints.down('md')]: {
         margin: 0,
+        padding: '10px 15px',
         flexDirection: 'column'
     }
 }))
 
-const RightContainer = styled(Grid)`
-    margin-top: 50px;
-    & > p {
-        margin-top: 10px;
+const RightContainer = styled(Grid)(({ theme }) => ({
+    marginTop: '50px',
+    paddingLeft: '50px',
+    '& > p': {
+        marginTop: '10px'
+    },
+    [theme.breakpoints.down('md')]: {
+        paddingLeft: 0,
+        marginTop: '20px'
     }
-`;
+}));
 
 
 

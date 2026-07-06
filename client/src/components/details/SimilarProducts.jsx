@@ -20,10 +20,14 @@ const responsive = {
     }
 };
 
-const Component = styled(Box)`
-    margin-top: 20px;
-    background: #FFFFFF;
-`;
+const Component = styled(Box)(({ theme }) => ({
+    marginTop: '20px',
+    background: '#FFFFFF',
+    margin: '20px 50px 0 50px',
+    [theme.breakpoints.down('md')]: {
+        margin: '10px 15px 0 15px'
+    }
+}));
 
 const Title = styled(Typography)`
     font-size: 22px;

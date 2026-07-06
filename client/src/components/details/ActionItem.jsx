@@ -29,9 +29,11 @@ const ImageWrapper = styled(Box)`
 `;
 
 const Image = styled('img')({
-    width: '100%',
-    maxHeight: '350px',
-    objectFit: 'contain'
+    width: 'auto',
+    height: '320px',
+    maxWidth: '90%',
+    objectFit: 'contain',
+    padding: '15px'
 });
 
 const WishlistButton = styled(IconButton)`

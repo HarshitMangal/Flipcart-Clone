@@ -16,28 +16,25 @@ const Component = styled(Box)`
     background: #F2F2F2;
 `;
 
-const Container = styled(Grid)(({ theme }) => ({
+const ProductCard = styled(Box)(({ theme }) => ({
     background: '#FFFFFF',
-    display: 'flex',
-    flexDirection: 'row',
-    padding: '20px 50px',
+    padding: '20px 40px',
     margin: '0 60px',
-    width: 'auto',
     borderTop: '3px solid #2874f0',
     boxShadow: '0 1px 3px 0 rgba(0,0,0,.1)',
     [theme.breakpoints.down('lg')]: {
-        margin: '0 20px'
+        margin: '0 20px',
+        padding: '20px'
     },
     [theme.breakpoints.down('md')]: {
         margin: 0,
-        padding: '10px 15px',
-        flexDirection: 'column'
+        padding: '15px 10px'
     }
 }))
 
 const RightContainer = styled(Grid)(({ theme }) => ({
     marginTop: '50px',
-    paddingLeft: '50px',
+    paddingLeft: '40px',
     '& > p': {
         marginTop: '10px'
     },
@@ -87,22 +84,21 @@ const DetailView = () => {
         <Component>
             {
                 product && Object.keys(product).length > 0 &&
-                < Container  container>
-
-                    <Grid item lg={5} md={5} sm={12} xs={12}>
-                        <ActionItem product={product} />
+                <ProductCard>
+                    <Grid container>
+                        <Grid item lg={5} md={5} sm={12} xs={12}>
+                            <ActionItem product={product} />
+                        </Grid>
+                        <RightContainer item lg={7} md={7} sm={12} xs={12}>
+                            <ProductDetail 
+                                product={product} 
+                                reviews={reviews}
+                                averageRating={averageRating}
+                                refetchReviews={fetchReviews}
+                            />
+                        </RightContainer>
                     </Grid>
-
-                    <RightContainer item lg={7} md={7} sm={12} xs={12}>
-                        <ProductDetail 
-                            product={product} 
-                            reviews={reviews}
-                            averageRating={averageRating}
-                            refetchReviews={fetchReviews}
-                        />
-                    </RightContainer>
-
-                </ Container>
+                </ProductCard>
             }
             {product && <SimilarProducts productId={product.id} />}
         </Component>

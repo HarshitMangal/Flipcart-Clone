@@ -53,8 +53,15 @@ const ButtonWrapper = styled(Box)(({ theme }) => ({
     display: 'flex',
     gap: '8px',
     padding: '10px 0',
+    flexWrap: 'wrap',
+    '& > button': {
+        minWidth: '120px'
+    },
     [theme.breakpoints.down('sm')]: {
-        flexDirection: 'column'
+        flexDirection: 'column',
+        '& > button': {
+            width: '100%'
+        }
     }
 }));
 

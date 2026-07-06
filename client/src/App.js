@@ -25,7 +25,7 @@ function App() {
    <DataProvider >
     <BrowserRouter>
       <Header/>
-      <Box sx={{ marginTop: 6}}>
+      <Box component="main" sx={{ marginTop: 6}}>
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/product/:id' element={ <DetailView/>} />

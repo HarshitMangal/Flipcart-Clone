@@ -1,0 +1,30 @@
+# ShopSphere
+
+An optimized MERN-stack e-commerce replica platform built with React, Node.js, Express, MongoDB, Redis, and Socket.io.
+
+## Core Services
+
+- **User Authentication**: Secure signup with Email OTP verification (Nodemailer), Google OAuth integration, and JWT sessions.
+- **AI Integration**: Google Gemini 2.5 Flash chatbot with LangChain context windowing for intelligent catalog queries and dynamic multi-language review translations.
+- **Performance Optimization**: Distributed Redis caching wrapper with automatic MongoDB fallback, 1-hour TTL, and CRUD-triggered pattern invalidation.
+- **Geolocation & Localized Payments**: Automatic user country detection (via ipapi.co/json) routing checkouts (Razorpay domestic checkout with HMAC signature verification vs international card checkout).
+- **Real-Time Duplex Communication**: Socket.io user-to-admin support chat rooms with custom MongoDB aggregations for dashboard sorting.
+
+## Main Routes
+
+- `/`: Home page (Product collections slides, categories, promotion banner)
+- `/product/:id`: Detailed product page (Add to Cart, Buy Now, Group Buy features, and reviews)
+- `/cart`: Checkout basket (Address input, coupon code validation, and payment routing triggers)
+- `/orders`: Order history logs
+- `/admin`: Seller dashboard (Inventory logs and order status management)
+- `/wishlist`: User wishlisted items
+- `/profile`: User profiles and shipping addresses
+- `/seller/onboarding`: Seller onboarding page
+
+## Tech Stack
+- Frontend: React 19, Redux Toolkit, Material-UI, react-multi-carousel
+- Backend: Node.js, Express, mongoose ODM
+- Caching: Redis
+- WebSockets: Socket.io
+- Payments: Razorpay SDK
+- AI/LLM: Google Gemini AI SDK

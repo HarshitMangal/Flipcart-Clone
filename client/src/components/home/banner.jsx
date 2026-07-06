@@ -48,7 +48,14 @@ const Banner=()=>{
          {
         bannerData.map((data, index)=>{
           return(
-            <Image src={data.url} alt="banner" key={index} />
+            <Image 
+              src={data.url} 
+              alt={`Featured offer banner ${index + 1}`} 
+              key={index} 
+              width="1688"
+              height="280"
+              style={{ aspectRatio: '3376/560', objectFit: 'cover' }}
+            />
           )
         })
          }

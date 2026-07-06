@@ -31,7 +31,7 @@ const NavBar = ({ onCategorySelect }) => {
             {
                 navData.map(data => (
                     <Container onClick={() => onCategorySelect && onCategorySelect(data.text)} style={{ cursor: 'pointer' }}>
-                        <img src={data.url} alt="nav" style={{width:64}}/>
+                        <img src={data.url} alt={data.text} width="64" height="64" />
                         <Text>{data.text}</Text>
                     </Container>
                 ))

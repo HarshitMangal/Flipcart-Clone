@@ -40,11 +40,24 @@ const MidSection = () => {
     <>
       <Wrapper>
         {ImageURL.map((image, index) => (
-          <SmallImage src={image} key={index} alt="banner" />
+          <SmallImage 
+            src={image} 
+            key={index} 
+            alt={`Promotional banner ${index + 1}`} 
+            width="320" 
+            height="320" 
+            style={{ aspectRatio: '1/1', objectFit: 'cover' }} 
+          />
         ))}
       </Wrapper>
 
-      <LargeImage src={url} alt="mid-banner" />
+      <LargeImage 
+        src={url} 
+        alt="mid-section promotion banner" 
+        width="1503" 
+        height="216" 
+        style={{ aspectRatio: '3006/433', objectFit: 'cover' }} 
+      />
     </>
   );
 };

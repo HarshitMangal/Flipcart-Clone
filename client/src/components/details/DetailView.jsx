@@ -44,6 +44,16 @@ const RightContainer = styled(Grid)(({ theme }) => ({
     }
 }));
 
+const StyledGridContainer = styled(Grid)(({ theme }) => ({
+    display: 'flex !important',
+    flexDirection: 'row !important',
+    flexWrap: 'nowrap',
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column !important',
+        flexWrap: 'wrap'
+    }
+}));
+
 
 
 
@@ -85,7 +95,7 @@ const DetailView = () => {
             {
                 product && Object.keys(product).length > 0 &&
                 <ProductCard>
-                    <Grid container>
+                    <StyledGridContainer container>
                         <Grid item lg={5} md={5} sm={12} xs={12}>
                             <ActionItem product={product} />
                         </Grid>
@@ -97,7 +107,7 @@ const DetailView = () => {
                                 refetchReviews={fetchReviews}
                             />
                         </RightContainer>
-                    </Grid>
+                    </StyledGridContainer>
                 </ProductCard>
             }
             {product && <SimilarProducts productId={product.id} />}

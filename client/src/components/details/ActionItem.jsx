@@ -9,11 +9,9 @@ import { toggleWishlistAPI, createGroupBuyAPI, joinGroupBuyAPI } from '../../ser
 import axios from 'axios';
 
 const LeftContainer = styled(Box)(({ theme }) => ({
-    minWidth: '40%',
-    padding: '40px 0 0 40px',
+    padding: '40px 0 0 0',
     [theme.breakpoints.down('md')]: {
-        padding: '20px 20px',
-        minWidth: 'unset'
+        padding: '20px 0'
     }
 }))
 

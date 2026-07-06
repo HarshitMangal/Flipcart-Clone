@@ -18,7 +18,6 @@ const Component = styled(Box)`
 
 const Container = styled(Grid)(({ theme }) => ({
     background: '#FFFFFF',
-    display: 'flex',
     padding: '20px 50px',
     margin: '0 130px',
     width: 'auto',
@@ -29,8 +28,7 @@ const Container = styled(Grid)(({ theme }) => ({
     },
     [theme.breakpoints.down('md')]: {
         margin: 0,
-        padding: '10px 15px',
-        flexDirection: 'column'
+        padding: '10px 15px'
     }
 }))
 

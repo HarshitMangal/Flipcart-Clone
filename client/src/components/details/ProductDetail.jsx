@@ -274,7 +274,7 @@ const ProductDetail = ({ product, reviews, averageRating, refetchReviews }) => {
                 &nbsp;&nbsp;&nbsp;
 
                 <span style={{ color: '#388E3C' }}>
-                    {product.price?.discount} off
+                    {product.price?.discount && (product.price.discount.toLowerCase().includes('off') ? product.price.discount : `${product.price.discount} off`)}
                 </span>
             </Typography>
 

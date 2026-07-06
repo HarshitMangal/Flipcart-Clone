@@ -11,23 +11,42 @@ import axios from 'axios';
 const LeftContainer = styled(Box)(({ theme }) => ({
     minWidth: '40%',
     padding: '40px 0 0 40px',
-    position: 'relative',
     [theme.breakpoints.down('md')]: {
         padding: '20px 20px',
         minWidth: 'unset'
     }
 }))
+
+const ImageWrapper = styled(Box)`
+    padding: 15px 20px;
+    border: 1px solid #f0f0f0;
+    width: 95%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #FFFFFF;
+`;
+
 const Image = styled('img')({
-    padding: '15px 20px',
-    border: '1px solid #f0f0f0',
-    width: '95%'
+    width: '100%',
+    maxHeight: '350px',
+    objectFit: 'contain'
 });
 
-const StyledButton = styled(Button)`
-    width: 46%;
-    border-radius: 2px;
-    height: 50px;
-    color: #FFF;
+const WishlistButton = styled(IconButton)`
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.15);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    z-index: 5;
+    &:hover {
+        background: #FFFFFF;
+    }
 `;
 
 const ButtonWrapper = styled(Box)(({ theme }) => ({
@@ -179,10 +198,12 @@ const ActionItem=({ product})=>{
 
      return (
           <LeftContainer>
-             <IconButton onClick={toggleWishlist} style={{ position: 'absolute', top: 45, right: 10, background: '#f0f0f0' }} aria-label="add to wishlist">
-                 <FavoriteIcon style={{ color: '#ff4343' }} />
-             </IconButton>
-             <Image src={product.detailUrl} /><br />
+             <ImageWrapper>
+                 <WishlistButton onClick={toggleWishlist} aria-label="add to wishlist">
+                     <FavoriteIcon style={{ color: '#ff4343' }} />
+                 </WishlistButton>
+                 <Image src={product.detailUrl} />
+             </ImageWrapper>
              <ButtonWrapper>
                  <Button 
                      onClick={() => addItemToCart()} 

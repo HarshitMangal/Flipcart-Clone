@@ -20,8 +20,13 @@ const Container = styled(Grid)(({ theme }) => ({
     background: '#FFFFFF',
     display: 'flex',
     padding: '20px 50px',
-    margin: '0 50px',
+    margin: '0 130px',
     width: 'auto',
+    borderTop: '3px solid #2874f0',
+    boxShadow: '0 1px 3px 0 rgba(0,0,0,.1)',
+    [theme.breakpoints.down('lg')]: {
+        margin: '0 30px'
+    },
     [theme.breakpoints.down('md')]: {
         margin: 0,
         padding: '10px 15px',

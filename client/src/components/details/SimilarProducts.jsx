@@ -23,7 +23,10 @@ const responsive = {
 const Component = styled(Box)(({ theme }) => ({
     marginTop: '20px',
     background: '#FFFFFF',
-    margin: '20px 50px 0 50px',
+    margin: '20px 130px 0 130px',
+    [theme.breakpoints.down('lg')]: {
+        margin: '20px 30px 0 30px'
+    },
     [theme.breakpoints.down('md')]: {
         margin: '10px 15px 0 15px'
     }

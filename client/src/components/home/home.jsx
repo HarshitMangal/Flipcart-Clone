@@ -118,7 +118,7 @@ const Home = () => {
      >
          <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#2874f0', color: '#fff' }}>
              <Typography variant="h6" sx={{ fontWeight: 600, color: 'white' }}>{selectedCategory} ({filteredCategoryProducts.length} Products)</Typography>
-             <IconButton onClick={() => setIsCategoryOpen(false)} sx={{ color: '#fff' }}>
+             <IconButton onClick={() => setIsCategoryOpen(false)} sx={{ color: '#fff' }} aria-label="close category products list">
                  <CloseIcon />
              </IconButton>
          </DialogTitle>

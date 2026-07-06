@@ -155,7 +155,7 @@ const Slide = ({ products, title,timer }) => {
     >
         <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#2874f0', color: '#fff' }}>
             <Typography variant="h6" sx={{ fontWeight: 600, color: 'white' }}>{title} ({products?.length} Products)</Typography>
-            <IconButton onClick={() => setOpenCatalog(false)} sx={{ color: '#fff' }}>
+            <IconButton onClick={() => setOpenCatalog(false)} sx={{ color: '#fff' }} aria-label="close catalog products list">
                 <CloseIcon />
             </IconButton>
         </DialogTitle>

@@ -179,7 +179,7 @@ const ActionItem=({ product})=>{
 
      return (
           <LeftContainer>
-             <IconButton onClick={toggleWishlist} style={{ position: 'absolute', top: 45, right: 10, background: '#f0f0f0' }}>
+             <IconButton onClick={toggleWishlist} style={{ position: 'absolute', top: 45, right: 10, background: '#f0f0f0' }} aria-label="add to wishlist">
                  <FavoriteIcon style={{ color: '#ff4343' }} />
              </IconButton>
              <Image src={product.detailUrl} /><br />

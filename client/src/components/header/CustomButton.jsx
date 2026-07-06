@@ -163,7 +163,7 @@ const CustomButtons = () => {
             {/* Notification Bell Icon */}
             {account && (
                 <>
-                    <NotificationButton onClick={handleNotifClick}>
+                    <NotificationButton onClick={handleNotifClick} aria-label="price drop notifications">
                         <Badge badgeContent={unreadCount} color="error">
                             <NotificationsIcon />
                         </Badge>

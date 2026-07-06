@@ -88,6 +88,7 @@ const Header = () => {
                 <MenuButton
                     color="inherit"
                     onClick={handleOpen}
+                    aria-label="open drawer menu"
                 >
                     <Menu />
                 </MenuButton>
@@ -104,7 +105,7 @@ const Header = () => {
                                 Plus
                             </Box>
                         </SubHeading>
-                        <PlusImage src={subURL} />
+                        <PlusImage src={subURL} alt="plus logo badge" />
                     </Box>
                 </Component>
                 <Search />

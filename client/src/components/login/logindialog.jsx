@@ -329,10 +329,8 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
                             <CreateAccount onClick={() => toggleSignup()}>New to ShopSphere? Create an account</CreateAccount>
                         </Wrapper> : 
                         <Wrapper>
-                            <Box style={{ display: 'flex', gap: '15px' }}>
-                                <TextField variant="standard" onChange={(e) => onInputChange(e)} name='firstname' label='Enter Firstname' style={{ flex: 1 }} />
-                                <TextField variant="standard" onChange={(e) => onInputChange(e)} name='lastname' label='Enter Lastname' style={{ flex: 1 }} />
-                            </Box>
+                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name='firstname' label='Enter Firstname' />
+                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name='lastname' label='Enter Lastname' />
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='username' label='Enter Username' />
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='email' label='Enter Email' />
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='password' label='Enter Password' type="password" />

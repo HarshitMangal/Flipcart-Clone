@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-
-import { Dialog, DialogContent, TextField, Box, Button, Typography, styled } from '@mui/material';
+import { Dialog, DialogContent, TextField, Box, Button, Typography, styled, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { authenticateLogin, authenticateSignup, authenticateGoogleLogin, sendOtpAPI, verifyOtpAPI } from '../../service/api';
 import { GoogleLogin } from '@react-oauth/google';
@@ -17,12 +17,30 @@ const Component = styled(DialogContent)(({ theme }) => ({
     }
 }));
 
+const CloseButton = styled(IconButton)`
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    color: #555;
+    z-index: 1000;
+    transition: color 0.2s ease;
+    &:hover {
+        color: #000;
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+`;
+
 const LoginButton = styled(Button)`
     text-transform: none;
     background: #FB641B;
     color: #fff;
     height: 48px;
     border-radius: 2px;
+    transition: background 0.2s ease;
+    &:hover {
+        background: #f3580c;
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+    }
 `;
 
 const RequestOTP = styled(Button)`
@@ -32,6 +50,11 @@ const RequestOTP = styled(Button)`
     height: 48px;
     border-radius: 2px;
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
+    transition: background 0.2s ease;
+    &:hover {
+        background: #f9f9f9;
+        box-shadow: 0 2px 6px 0 rgb(0 0 0 / 25%);
+    }
 `;
 
 const Text = styled(Typography)`
@@ -268,7 +291,10 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
     }
 
     return (
-        <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { maxWidth: 'unset' } }}>
+        <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { maxWidth: 'unset', position: 'relative' } }}>
+            <CloseButton onClick={handleClose}>
+                <CloseIcon />
+            </CloseButton>
             <Component>
                 <Box style={{display: 'flex', height: '100%'}}>
                     <Image>
@@ -303,8 +329,10 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
                             <CreateAccount onClick={() => toggleSignup()}>New to ShopSphere? Create an account</CreateAccount>
                         </Wrapper> : 
                         <Wrapper>
-                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name='firstname' label='Enter Firstname' />
-                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name='lastname' label='Enter Lastname' />
+                            <Box style={{ display: 'flex', gap: '15px' }}>
+                                <TextField variant="standard" onChange={(e) => onInputChange(e)} name='firstname' label='Enter Firstname' style={{ flex: 1 }} />
+                                <TextField variant="standard" onChange={(e) => onInputChange(e)} name='lastname' label='Enter Lastname' style={{ flex: 1 }} />
+                            </Box>
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='username' label='Enter Username' />
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='email' label='Enter Email' />
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='password' label='Enter Password' type="password" />

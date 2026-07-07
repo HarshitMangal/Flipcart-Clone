@@ -124,6 +124,7 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
     const [ signupOtpSent, setSignupOtpSent ] = useState(false);
     const [ signupOtp, setSignupOtp ] = useState('');
     const [ isSignupEmailVerified, setIsSignupEmailVerified ] = useState(true);
+    const [ signupError, setSignupError ] = useState('');
 
     useEffect(() => {
         showError(false);
@@ -219,29 +220,30 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
 
         if (!data.firstname || !/^[A-Z][a-zA-Z]*$/.test(data.firstname)) {
-            alert("Firstname must start with a Capital letter and contain only alphabets!");
+            setSignupError("Firstname must start with a Capital letter and contain only alphabets!");
             return false;
         }
         if (!data.lastname || !/^[A-Z][a-zA-Z]*$/.test(data.lastname)) {
-            alert("Lastname must start with a Capital letter and contain only alphabets!");
+            setSignupError("Lastname must start with a Capital letter and contain only alphabets!");
             return false;
         }
         if (!data.username || data.username.trim().length < 4) {
-            alert("Username must be at least 4 characters long!");
+            setSignupError("Username must be at least 4 characters long!");
             return false;
         }
         if (!data.email || !emailRegex.test(data.email)) {
-            alert("Please enter a valid email address!");
+            setSignupError("Please enter a valid email address!");
             return false;
         }
         if (!data.password || !passwordRegex.test(data.password)) {
-            alert("Password must be at least 6 characters long and contain at least one letter and one number!");
+            setSignupError("Password must be at least 6 characters long with 1 letter & 1 number!");
             return false;
         }
         if (!data.phone || !phoneRegex.test(data.phone)) {
-            alert("Please enter a valid 10-digit mobile number!");
+            setSignupError("Please enter a valid 10-digit mobile number!");
             return false;
         }
+        setSignupError('');
         return true;
     };
 
@@ -307,6 +309,7 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='email' label='Enter Email' />
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='password' label='Enter Password' type="password" />
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='phone' label='Enter Phone' />
+                            { signupError && <Error style={{ lineHeight: 'normal', margin: '10px 0 0 0' }}>{signupError}</Error> }
                             <LoginButton onClick={() => signupUser()} >Continue</LoginButton>
                         </Wrapper>
                     }

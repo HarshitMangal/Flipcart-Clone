@@ -138,11 +138,41 @@ const AdminPanel = () => {
 
     // 4. Naya product add karne ki request
     const handleAddProductSubmit = async () => {
-        const { shortTitle, longTitle, mrp, cost, url } = newProduct;
+        const { shortTitle, longTitle, mrp, cost, url, description } = newProduct;
 
         // Validation
-        if (!shortTitle || !longTitle || !mrp || !cost || !url) {
-            showNotification("Please fill all required fields", "warning");
+        if (!shortTitle || !longTitle || !mrp || !cost || !url || !description) {
+            showNotification("Please fill all required fields (Titles, Prices, Image URL, and Description)", "warning");
+            return;
+        }
+
+        const numericMrp = Number(mrp);
+        const numericCost = Number(cost);
+        const numericQty = Number(newProduct.quantity);
+
+        if (isNaN(numericMrp) || numericMrp <= 0) {
+            showNotification("MRP must be a valid positive number", "warning");
+            return;
+        }
+
+        if (isNaN(numericCost) || numericCost <= 0) {
+            showNotification("Cost/Selling Price must be a valid positive number", "warning");
+            return;
+        }
+
+        if (numericCost > numericMrp) {
+            showNotification("Cost/Selling Price cannot be greater than MRP!", "warning");
+            return;
+        }
+
+        if (isNaN(numericQty) || numericQty < 0 || !Number.isInteger(numericQty)) {
+            showNotification("Stock quantity must be a valid non-negative integer", "warning");
+            return;
+        }
+
+        const urlRegex = /^(https?:\/\/|\/|data:image\/)/;
+        if (!urlRegex.test(url)) {
+            showNotification("Please enter a valid Image URL (starting with http://, https://, or /)", "warning");
             return;
         }
 
@@ -154,13 +184,13 @@ const AdminPanel = () => {
                 longTitle: newProduct.longTitle
             },
             price: {
-                mrp: Number(newProduct.mrp),
-                cost: Number(newProduct.cost),
-                discount: newProduct.discount || `${Math.round(((newProduct.mrp - newProduct.cost)/newProduct.mrp)*100)}% Off`
+                mrp: numericMrp,
+                cost: numericCost,
+                discount: newProduct.discount || `${Math.round(((numericMrp - numericCost)/numericMrp)*100)}% Off`
             },
-            quantity: Number(newProduct.quantity),
+            quantity: numericQty,
             description: newProduct.description,
-            discount: newProduct.discount || `${Math.round(((newProduct.mrp - newProduct.cost)/newProduct.mrp)*100)}% Off`,
+            discount: newProduct.discount || `${Math.round(((numericMrp - numericCost)/numericMrp)*100)}% Off`,
             tagline: newProduct.tagline || 'Special Offer'
         };
 
@@ -197,9 +227,15 @@ const AdminPanel = () => {
     const handleUpdateStock = async () => {
         if (!selectedProduct) return;
 
+        const numericStock = Number(newStock);
+        if (isNaN(numericStock) || numericStock < 0 || !Number.isInteger(numericStock)) {
+            showNotification("Stock quantity must be a valid non-negative integer", "warning");
+            return;
+        }
+
         try {
             await axios.put(`http://localhost:8000/api/admin/products/${selectedProduct.id}`, {
-                quantity: Number(newStock)
+                quantity: numericStock
             });
             showNotification("Stock level updated successfully!");
             setOpenStockDialog(false);

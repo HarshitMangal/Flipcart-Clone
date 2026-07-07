@@ -15,15 +15,31 @@ export const userSignup = async (req, res) => {
     try {
         console.log("req.body =", req.body);
 
-        const { username, email, password } = req.body;
+        const { firstname, lastname, username, email, password, phone } = req.body;
 
-        // Force validation: Check if email has been verified via OTP (Bypassed by User request)
-        /*
-        const verifiedRecord = signupOtps.get(email);
-        if (!verifiedRecord || !verifiedRecord.verified) {
-            return res.status(400).json({ message: "Email verification is required before signing up!" });
+        // Validation rules
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const phoneRegex = /^[6-9]\d{9}$/;
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+
+        if (!firstname || !/^[A-Z][a-zA-Z]*$/.test(firstname)) {
+            return res.status(400).json({ message: "Firstname must start with a Capital letter and contain only alphabets!" });
         }
-        */
+        if (!lastname || !/^[A-Z][a-zA-Z]*$/.test(lastname)) {
+            return res.status(400).json({ message: "Lastname must start with a Capital letter and contain only alphabets!" });
+        }
+        if (!username || username.trim().length < 4) {
+            return res.status(400).json({ message: "Username must be at least 4 characters long!" });
+        }
+        if (!email || !emailRegex.test(email)) {
+            return res.status(400).json({ message: "Please enter a valid email address!" });
+        }
+        if (!password || !passwordRegex.test(password)) {
+            return res.status(400).json({ message: "Password must be at least 6 characters long and contain at least one letter and one number!" });
+        }
+        if (!phone || !phoneRegex.test(phone)) {
+            return res.status(400).json({ message: "Please enter a valid 10-digit mobile number!" });
+        }
 
         const existUsername = await User.findOne({ username });
         if (existUsername) {

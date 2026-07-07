@@ -213,9 +213,40 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
         }
     }
 
+    const validateSignup = (data) => {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const phoneRegex = /^[6-9]\d{9}$/;
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+
+        if (!data.firstname || !/^[A-Z][a-zA-Z]*$/.test(data.firstname)) {
+            alert("Firstname must start with a Capital letter and contain only alphabets!");
+            return false;
+        }
+        if (!data.lastname || !/^[A-Z][a-zA-Z]*$/.test(data.lastname)) {
+            alert("Lastname must start with a Capital letter and contain only alphabets!");
+            return false;
+        }
+        if (!data.username || data.username.trim().length < 4) {
+            alert("Username must be at least 4 characters long!");
+            return false;
+        }
+        if (!data.email || !emailRegex.test(data.email)) {
+            alert("Please enter a valid email address!");
+            return false;
+        }
+        if (!data.password || !passwordRegex.test(data.password)) {
+            alert("Password must be at least 6 characters long and contain at least one letter and one number!");
+            return false;
+        }
+        if (!data.phone || !phoneRegex.test(data.phone)) {
+            alert("Please enter a valid 10-digit mobile number!");
+            return false;
+        }
+        return true;
+    };
+
     const signupUser = async() => {
-        if (!isSignupEmailVerified) {
-            alert("Please verify your email via OTP first!");
+        if (!validateSignup(signup)) {
             return;
         }
         let response = await authenticateSignup(signup);

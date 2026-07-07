@@ -11,6 +11,16 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendOTP = async (email, otp) => {
+    // Development fallback if email credentials are not set in .env
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        console.log('\n==================================================');
+        console.log(`⚠️  [DEV MODE] SMTP Email credentials missing in .env`);
+        console.log(`✉️  Mock sending verification code to: ${email}`);
+        console.log(`🔑 [OTP CODE] Your verification code is: ${otp}`);
+        console.log('==================================================\n');
+        return true; 
+    }
+
     try {
         const mailOptions = {
             from: process.env.EMAIL_USER,

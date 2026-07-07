@@ -47,6 +47,24 @@ export const addProduct = async (req, res) => {
     try {
         const productData = req.body;
 
+        const { title, price, url, description, quantity } = productData;
+        if (!title || !title.shortTitle || !title.longTitle || !price || !price.mrp || !price.cost || !url || !description) {
+            return res.status(400).json({ message: "Please fill all required fields (Titles, Prices, Image URL, and Description)" });
+        }
+        const numericMrp = Number(price.mrp);
+        const numericCost = Number(price.cost);
+        const numericQty = Number(quantity);
+
+        if (isNaN(numericMrp) || numericMrp <= 0 || isNaN(numericCost) || numericCost <= 0) {
+            return res.status(400).json({ message: "MRP and Cost/Selling Price must be valid positive numbers" });
+        }
+        if (numericCost > numericMrp) {
+            return res.status(400).json({ message: "Cost/Selling Price cannot be greater than MRP!" });
+        }
+        if (isNaN(numericQty) || numericQty < 0 || !Number.isInteger(numericQty)) {
+            return res.status(400).json({ message: "Stock quantity must be a valid non-negative integer" });
+        }
+
         if (!productData.id) {
             productData.id = 'prod_' + Math.random().toString(36).substring(2, 9);
         }
@@ -75,6 +93,13 @@ export const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
         const updatedData = req.body;
+
+        if (updatedData.quantity !== undefined) {
+            const numericQty = Number(updatedData.quantity);
+            if (isNaN(numericQty) || numericQty < 0 || !Number.isInteger(numericQty)) {
+                return res.status(400).json({ message: "Stock quantity must be a valid non-negative integer" });
+            }
+        }
 
         const oldProduct = await Product.findOne({ id: id });
         if (!oldProduct) {

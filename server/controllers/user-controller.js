@@ -41,26 +41,28 @@ export const userSignup = async (req, res) => {
             return res.status(400).json({ message: "Please enter a valid 10-digit mobile number!" });
         }
 
-        const existUsername = await User.findOne({ username });
+        const normalizedUsername = username.toLowerCase();
+        const normalizedEmail = email.toLowerCase();
+
+        const existUsername = await User.findOne({ username: normalizedUsername });
         if (existUsername) {
             return res.status(400).json({ message: "Username already exists" });
         }
 
-        const existEmail = await User.findOne({ email });
+        const existEmail = await User.findOne({ email: normalizedEmail });
         if (existEmail) {
             return res.status(400).json({ message: "User already exists with this email" });
         }
-
-        // Remove the temporary validation token
-        // signupOtps.delete(email);
 
         // Salt and hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = new User({
             ...req.body,
+            username: normalizedUsername,
+            email: normalizedEmail,
             password: hashedPassword,
-            role: username.toLowerCase() === 'admin' ? 'admin' : 'user',
+            role: normalizedUsername === 'admin' ? 'admin' : 'user',
             isVerified: true
         });
         await newUser.save();
@@ -213,10 +215,12 @@ export const userLogin = async (req, res) => {
             return res.status(400).json({ message: "Please fill all fields" });
         }
 
+        const normalizedInput = username.toLowerCase();
+
         const user = await User.findOne({
             $or: [
-                { username: username },
-                { email: username }
+                { username: normalizedInput },
+                { email: normalizedInput }
             ]
         });
 

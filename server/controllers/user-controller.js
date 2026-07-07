@@ -20,7 +20,7 @@ export const userSignup = async (req, res) => {
         // Validation rules
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         const phoneRegex = /^[6-9]\d{9}$/;
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
 
         if (!firstname || !/^[A-Z][a-zA-Z]*$/.test(firstname)) {
             return res.status(400).json({ message: "Firstname must start with a Capital letter and contain only alphabets!" });

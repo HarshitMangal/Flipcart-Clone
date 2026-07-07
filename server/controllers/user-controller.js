@@ -17,11 +17,13 @@ export const userSignup = async (req, res) => {
 
         const { username, email, password } = req.body;
 
-        // Force validation: Check if email has been verified via OTP
+        // Force validation: Check if email has been verified via OTP (Bypassed by User request)
+        /*
         const verifiedRecord = signupOtps.get(email);
         if (!verifiedRecord || !verifiedRecord.verified) {
             return res.status(400).json({ message: "Email verification is required before signing up!" });
         }
+        */
 
         const existUsername = await User.findOne({ username });
         if (existUsername) {
@@ -34,7 +36,7 @@ export const userSignup = async (req, res) => {
         }
 
         // Remove the temporary validation token
-        signupOtps.delete(email);
+        // signupOtps.delete(email);
 
         // Salt and hash the password
         const hashedPassword = await bcrypt.hash(password, 10);

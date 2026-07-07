@@ -123,7 +123,7 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
     // Signup OTP states
     const [ signupOtpSent, setSignupOtpSent ] = useState(false);
     const [ signupOtp, setSignupOtp ] = useState('');
-    const [ isSignupEmailVerified, setIsSignupEmailVerified ] = useState(false);
+    const [ isSignupEmailVerified, setIsSignupEmailVerified ] = useState(true);
 
     useEffect(() => {
         showError(false);
@@ -274,23 +274,7 @@ const LoginDialog = ({ open, setOpen, setAccount }) => {
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='lastname' label='Enter Lastname' />
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='username' label='Enter Username' />
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='email' label='Enter Email' />
-                            
-                            { !isSignupEmailVerified && (
-                                !signupOtpSent ? 
-                                    <RequestOTP onClick={() => requestSignupOtp()}>Request Email OTP</RequestOTP>
-                                : 
-                                    <Box style={{display:'flex', flexDirection:'column', gap: '10px', marginTop: '10px'}}>
-                                        <TextField variant="standard" onChange={(e) => setSignupOtp(e.target.value)} label='Enter Signup OTP' />
-                                        <Button variant="contained" style={{background: '#2874f0'}} onClick={() => verifySignupOtp()}>Verify Signup OTP</Button>
-                                    </Box>
-                            )}
-                            { isSignupEmailVerified && (
-                                <Typography style={{ color: 'green', fontSize: '12px', fontWeight: 600, marginTop: '10px' }}>
-                                    ✓ Email Verified Successfully
-                                </Typography>
-                            )}
-
-                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name='password' label='Enter Password' />
+                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name='password' label='Enter Password' type="password" />
                             <TextField variant="standard" onChange={(e) => onInputChange(e)} name='phone' label='Enter Phone' />
                             <LoginButton onClick={() => signupUser()} >Continue</LoginButton>
                         </Wrapper>
